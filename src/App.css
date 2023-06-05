@@ -1,0 +1,25 @@
+body, h1, p {
+    margin: 0;
+}
+
+.App_main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.App_scoreTimeContainer {
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.App_buttonsContainer {
+    display: flex;
+    padding: 0 0.5rem;
+}
+
+.App_startButton {
+    width: 100%;
+    padding: 0.5rem;
+}
