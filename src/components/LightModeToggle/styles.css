@@ -1,0 +1,39 @@
+.LightModeToggle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.LightModeToggle_label {
+    background-color: #d2d2d2;
+    width: 2rem;
+    height: 1rem;
+    border: solid 1px #00000030;
+    border-radius: 2rem;
+    cursor: pointer;
+    position: relative;
+    transition: 0.2s;
+}
+
+.LightModeToggle_label::before {
+    position: absolute;
+    left: 0;
+    top: 0;
+    content: "";
+    background-color: #FFFFFF;
+    width: 0.9rem;
+    height: 0.9rem;
+    border-radius: 2rem;
+    margin: 0.05rem;
+    transition: 0.2s;
+}
+.LightModeToggle_input {
+    display: none;
+}
+.LightModeToggle_input:checked + .LightModeToggle_label::before{
+    transform: translate(1rem);
+}
+
+.LightModeToggle_darkMode > .LightModeToggle_label::before {
+    background-color: #769656;
+}

@@ -1,3 +1,4 @@
+import { useContext } from 'react'
 import KnightSVG from "../Knight/KnightSVG"
 import PawnSVG from "../Pawn/PawnSVG"
 import { BoardSpace } from "../../utils/interfaces"
@@ -6,6 +7,7 @@ import classNames from 'classnames'
 import placeAudio from '../../assets/piece-placement.mp3'
 import captureAudio from '../../assets/piece-capture.mp3'
 import './styles.css'
+import GlobalContext from '../../utils/GlobalContext'
 
 interface Props {
     space: BoardSpace,
@@ -21,6 +23,7 @@ interface Props {
 }
 
 const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPosition, setKnightPosition, validMoves, setValidMoves, setScore }) => {
+    const { darkMode } = useContext(GlobalContext)
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault()
@@ -67,7 +70,9 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
             })} 
             id={`Row_${row}-Col_${col}`} 
             style={{
-                backgroundColor: space.validMove ? '#cb3535' : space.backgroundColor,
+                backgroundColor: space.validMove ? '#cb3535' 
+                    : (darkMode && space.backgroundColor === '#b58863') ? '#769656'
+                    : space.backgroundColor
             }}
             onClick={handleClick}
         >

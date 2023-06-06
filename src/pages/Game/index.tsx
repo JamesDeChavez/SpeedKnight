@@ -1,13 +1,16 @@
-import React, { useState, useRef, useEffect, useLayoutEffect } from 'react'
+import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react'
 import Board from '../../components/Board'
 import './styles.css'
 import { gsap } from 'gsap'
+import GlobalContext from '../../utils/GlobalContext'
+import classNames from 'classnames'
 
 interface Props {
     root: React.MutableRefObject<null>
 }
 
 const Game: React.FC<Props> = ({ root }) => {
+    const { darkMode } = useContext(GlobalContext)
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
@@ -53,7 +56,7 @@ const Game: React.FC<Props> = ({ root }) => {
 
     const className = 'Game'
     return (
-        <div className={className}>
+        <div className={classNames(className, darkMode && className + '_darkMode')}>
             <div className={`${className}_scoreTimeContainer`}>
                 <p className={`${className}_score`}>{`Score: ${score}`}</p>
                 <p className={`${className}_time`}>{`Time: ${time}`}</p>

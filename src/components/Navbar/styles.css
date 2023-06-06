@@ -40,8 +40,25 @@
     background: none;
     border: solid 1px #00000030;
     padding: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .Navbar_navButton:hover {
     cursor: pointer;
+}
+
+.Navbar_darkMode > h1 > a,
+.Navbar_darkMode > div > button,
+.Navbar_darkMode > div > button > a {
+    color: #FFFFFF;
+}
+
+.Navbar_darkMode > .Navbar_navButtonsContainer {
+    background-color: #2d2d2d;
+}
+
+.Navbar_darkMode > button > svg > rect {
+    fill: #FFFFFF;
 }

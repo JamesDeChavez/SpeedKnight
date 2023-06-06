@@ -1,8 +1,13 @@
-import { useState, useRef, useLayoutEffect } from 'react'
+import { useState, useRef, useLayoutEffect, useContext } from 'react'
 import { gsap } from 'gsap'
+import LightModeToggle from '../LightModeToggle'
+import classNames from 'classnames'
+import GlobalContext from '../../utils/GlobalContext'
+import { NavLink } from 'react-router-dom'
 import './styles.css'
 
 const Navbar = () => {
+    const { darkMode } = useContext(GlobalContext)
     const [navVisible, setNavVisible] = useState(false)
     const lineOne = useRef(null)
     const lineTwo = useRef(null)
@@ -69,11 +74,18 @@ const Navbar = () => {
         setNavVisible(prevState => !prevState)
     }
 
+    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+        if (navVisible && clickTimeline.current) {
+            clickTimeline.current.reverse()
+        }
+        setNavVisible(false)
+    }
+
     const className = 'Navbar'
     return (
-        <div className={className} ref={root}>
+        <div className={classNames(className, darkMode && className + '_darkMode')} ref={root}>
             <h1 className={`${className}_title`}>
-                <a href="/">Speed Knight Challenge</a>
+                <NavLink to="/" onClick={handleLinkClick} >Speed Knight Challenge</NavLink>
             </h1>
             <button 
                 className={`${className}_hamburgerContainer`} 
@@ -103,16 +115,16 @@ const Navbar = () => {
             </button>
             <div className={`${className}_navButtonsContainer`} style={{display: navVisible ? 'grid' : 'none'}}>
                 <button className={`${className}_navButton`}>
-                    Light Mode / Dark Mode
+                    Light / Dark <LightModeToggle />
                 </button>
                 <button className={`${className}_navButton`}>
-                    <a href="/instructions">How to Play</a>
+                    <NavLink to="/instructions" onClick={handleLinkClick} >How to Play</NavLink>
                 </button>
                 <button className={`${className}_navButton`}>
-                    <a href="/login">Login</a>
+                    <NavLink to="/login" onClick={handleLinkClick} >Login</NavLink>
                 </button>
                 <button className={`${className}_navButton`}>
-                    <a href="/register">Create Account</a>
+                    <NavLink to="/register" onClick={handleLinkClick} >Create Account</NavLink>
                 </button>
             </div>
         </div>
