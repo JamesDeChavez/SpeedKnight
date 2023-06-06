@@ -3,6 +3,8 @@ import PawnSVG from "../Pawn/PawnSVG"
 import { BoardSpace } from "../../utils/interfaces"
 import { determineNewPawnPosition, determineValidMoves } from '../../game/functions'
 import classNames from 'classnames'
+import placeAudio from '../../assets/piece-placement.mp3'
+import captureAudio from '../../assets/piece-capture.mp3'
 import './styles.css'
 
 interface Props {
@@ -24,6 +26,9 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
         e.preventDefault()
         if (!space.validMove) return
         const newBoard = [...board]
+
+        //Set audio to play
+        const audio = space.pawnVisible ? new Audio(captureAudio) : new Audio(placeAudio)
         
         //Update Pawn Position, if applicable
         if (space.pawnVisible) {
@@ -44,12 +49,14 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
         const newValidMoves = determineValidMoves(row, col)
         newValidMoves.forEach(move => {
             newBoard[move[0]][move[1]].validMove = true
-        })        
+        })
 
-        //Update State
+        //Update State and play audio
         setBoard(newBoard)
         setKnightPosition([row, col])
         setValidMoves(newValidMoves)
+        audio.play()
+
     }
 
     const className = 'Space'
