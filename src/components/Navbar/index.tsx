@@ -14,19 +14,16 @@ const Navbar = () => {
 
     useLayoutEffect(() => {        
         let gsapContext = gsap.context(() => {
-            //Entrance animation on render
-            gsap.from('.Navbar_hamburger', { duration: 1, y: -150 })
-            gsap.set('.Navbar_hamburger', { clearProps: true })
-
             //Burger click animation
             clickTimeline.current = gsap.timeline({ paused: true })
-                .set('.Navbar_line', { scaleX: 1 })
-                .to(lineOne.current, { duration: .2, y: 20 }, 'combine')
-                .to(lineThree.current, {  duration: .2, y: -20 }, 'combine')
-                .set('.Navbar_line', { transformOrigin: 'center' })
-                .to(lineOne.current, { duration: 0.2, rotate: 45}, 'rotate')
-                .to(lineTwo.current, { duration: 0.2, rotate: -45}, 'rotate')
-                .to(lineThree.current, { duration: 0.2, rotate: -45}, 'rotate')
+            .set('.Navbar_line', { scaleX: 1 })
+            .to(lineOne.current, { duration: .2, y: 20 }, 'combine')
+            .to(lineThree.current, {  duration: .2, y: -20 }, 'combine')
+            .set('.Navbar_line', { transformOrigin: 'center' })
+            .to(lineOne.current, { duration: 0.2, rotate: 45}, 'rotate')
+            .to(lineTwo.current, { duration: 0.2, rotate: -45}, 'rotate')
+            .to(lineThree.current, { duration: 0.2, rotate: -45}, 'rotate')
+            .from(`.${className}_navButtonsContainer`, { duration: 0.2, x: '100%'}, 'rotate')
 
         }, root)
 
@@ -45,7 +42,6 @@ const Navbar = () => {
                 .to(lineOne.current, { duration: 0.6, scaleX: 1, delay: -2*delay.current }, 'grow')
                 .to(lineTwo.current, { duration: 0.6, scaleX: 1, delay: -delay.current }, 'grow')
                 .to(lineThree.current, { duration: 0.6, scaleX: 1, delay: 0 }, 'grow')
-
         }, root)
         
         return () => gsapContext.revert()
@@ -76,7 +72,9 @@ const Navbar = () => {
     const className = 'Navbar'
     return (
         <div className={className} ref={root}>
-            <h1 className={`${className}_title`}>Speed Knight Challenge</h1>
+            <h1 className={`${className}_title`}>
+                <a href="/">Speed Knight Challenge</a>
+            </h1>
             <button 
                 className={`${className}_hamburgerContainer`} 
                 onClick={handleHamburgerClick}
@@ -103,7 +101,20 @@ const Navbar = () => {
                     />                        
                 </svg>
             </button>
-            
+            <div className={`${className}_navButtonsContainer`} style={{display: navVisible ? 'grid' : 'none'}}>
+                <button className={`${className}_navButton`}>
+                    Light Mode / Dark Mode
+                </button>
+                <button className={`${className}_navButton`}>
+                    <a href="/instructions">How to Play</a>
+                </button>
+                <button className={`${className}_navButton`}>
+                    <a href="/login">Login</a>
+                </button>
+                <button className={`${className}_navButton`}>
+                    <a href="/register">Create Account</a>
+                </button>
+            </div>
         </div>
     )
 }

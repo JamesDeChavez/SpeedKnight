@@ -1,0 +1,26 @@
+.LoginForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 90%;
+    justify-self: center;
+}
+
+.LoginForm_inputContainer {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.LoginForm_label {
+    font-weight: bold;
+}
+
+.LoginForm_input {
+    padding: 0.5rem;
+}
+
+.LoginForm_submitButton {
+    width: 100%;
+    padding: 0.5rem;
+}
+

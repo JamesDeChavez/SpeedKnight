@@ -1,4 +1,5 @@
 .Navbar {
+    position: relative;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
     border-bottom: solid 1px #00000030;
@@ -23,4 +24,24 @@
     width: 2rem;
     height: auto;
     border-radius: 5px;
+}
+
+.Navbar_navButtonsContainer {
+    display: none;
+    background: #FFFFFF;
+    border: solid 1px #00000030;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    z-index: 2;
+}
+
+.Navbar_navButton {
+    background: none;
+    border: solid 1px #00000030;
+    padding: 0.5rem;
+}
+
+.Navbar_navButton:hover {
+    cursor: pointer;
 }

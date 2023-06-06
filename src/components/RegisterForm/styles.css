@@ -1,0 +1,26 @@
+.RegisterForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 90%;
+    justify-self: center;
+}
+
+.RegisterForm_inputContainer {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.RegisterForm_label {
+    font-weight: bold;
+}
+
+.RegisterForm_input {
+    padding: 0.5rem;
+}
+
+.RegisterForm_submitButton {
+    width: 100%;
+    padding: 0.5rem;
+}
+

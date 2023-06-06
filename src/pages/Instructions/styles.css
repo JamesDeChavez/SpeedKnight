@@ -1,0 +1,13 @@
+.Instructions {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 90%;
+    justify-self: center;
+}
+
+.Instructions_textContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}

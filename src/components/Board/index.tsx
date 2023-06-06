@@ -1,15 +1,17 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useLayoutEffect } from 'react'
 import { BoardSpace } from '../../utils/interfaces'
 import { createBoard, createEmptyBoard } from '../../game/functions'
 import Space from '../Space'
 import './styles.css'
+import { gsap } from 'gsap'
 
 interface Props {
     setScore: React.Dispatch<React.SetStateAction<number>>,
-    gameActive: boolean
+    gameActive: boolean,
+    root: React.MutableRefObject<null>
 }
 
-const Board: React.FC<Props> = ({setScore, gameActive}) => {    
+const Board: React.FC<Props> = ({setScore, gameActive, root}) => {    
     const [board, setBoard] = useState<BoardSpace[][]>([])
     const [knightPosition, setKnightPosition] = useState<[number, number]>([0, 0])
     const [validMoves, setValidMoves] = useState<[number, number][]>([])
@@ -27,6 +29,13 @@ const Board: React.FC<Props> = ({setScore, gameActive}) => {
         ])
         setBoard(newBoard)
     }, [gameActive])
+
+    useLayoutEffect(() => {
+        let gsapContext = gsap.context(() => {
+            gsap.fromTo(`.${className}`, {duration: 0.5, opacity: 0}, {opacity: 1})
+            return () => gsapContext.revert()
+        }, root)
+    }, [])
 
     const className = 'Board'
     return (

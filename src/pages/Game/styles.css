@@ -1,0 +1,22 @@
+.Game {
+    height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    gap: 0.5rem;
+}
+
+.Game_scoreTimeContainer {
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Game_buttonsContainer {
+    display: flex;
+    padding: 0.5rem;
+}
+
+.Game_startButton {
+    width: 100%;
+    padding: 0.5rem;
+}
