@@ -25,14 +25,14 @@ export const createBoard = () => {
     const newBoard: BoardSpace[][] = []
     const pawnStartingRow = Math.floor(Math.random() * 6) + 1 
     const pawnStartingCol = Math.floor(Math.random() * 8) + 1 
-    const validMoves = determineValidMoves(7, 5)
+    const validMoves = determineValidMoves(7, 6)
     
     for (let i = 0; i < rows.length; i++) {
         const newRow = []
         for (let j = 0; j < columns.length; j++) {
             newRow.push({
                 backgroundColor: (i + j) % 2 === 0 ? '#b58863' : '#f0d9b5',
-                knightVisible: (rows[i] === 8 && columns[j] === 6) ? true : false,
+                knightVisible: (rows[i] === 8 && columns[j] === 7) ? true : false,
                 pawnVisible: (rows[i] === pawnStartingRow && columns[j] === pawnStartingCol) ? true : false,
                 validMove: false
             })

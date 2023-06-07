@@ -85,7 +85,9 @@ const Navbar = () => {
     return (
         <div className={classNames(className, darkMode && className + '_darkMode')} ref={root}>
             <h1 className={`${className}_title`}>
-                <NavLink to="/" onClick={handleLinkClick} >Speed Knight Challenge</NavLink>
+                <NavLink to="/" onClick={handleLinkClick} >
+                    Speed Knight Challenge
+                </NavLink>
             </h1>
             <button 
                 className={`${className}_hamburgerContainer`} 
@@ -117,15 +119,15 @@ const Navbar = () => {
                 <button className={`${className}_navButton`}>
                     Light / Dark <LightModeToggle />
                 </button>
-                <button className={`${className}_navButton`}>
-                    <NavLink to="/instructions" onClick={handleLinkClick} >How to Play</NavLink>
-                </button>
-                <button className={`${className}_navButton`}>
-                    <NavLink to="/login" onClick={handleLinkClick} >Login</NavLink>
-                </button>
-                <button className={`${className}_navButton`}>
-                    <NavLink to="/register" onClick={handleLinkClick} >Create Account</NavLink>
-                </button>
+                <NavLink className={`${className}_navButton`} to="/instructions" onClick={handleLinkClick} >
+                    How to Play
+                </NavLink>
+                <NavLink className={`${className}_navButton`} to="/login" onClick={handleLinkClick} >
+                    Log In
+                </NavLink>
+                <NavLink className={`${className}_navButton`} to="/register" onClick={handleLinkClick} >
+                    Create Account
+                </NavLink>
             </div>
         </div>
     )

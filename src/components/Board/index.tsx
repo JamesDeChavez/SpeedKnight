@@ -23,9 +23,9 @@ const Board: React.FC<Props> = ({setScore, gameActive, root}) => {
             return
         }
         const newBoard = createBoard()
-        setKnightPosition([7, 5])
+        setKnightPosition([7, 6])
         setValidMoves([
-            [6, 3], [6, 7], [5, 4], [5, 6]
+            [6, 4], [5, 5], [5, 7]
         ])
         setBoard(newBoard)
     }, [gameActive])

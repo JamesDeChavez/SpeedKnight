@@ -1,26 +1,56 @@
 .Game {
     height: 100%;
-    display: grid;
-    grid-template-rows: auto 1fr auto;
-    gap: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
 }
 
 .Game_scoreTimeContainer {
     padding: 0 0.5rem;
     display: flex;
     justify-content: space-between;
+    width: 100%;
+    max-width: 700px;
+    place-self: center;
 }
 
 .Game_buttonsContainer {
     display: flex;
-    padding: 0.5rem;
+    padding: 0 0.5rem;
+    width: 100%;
+    max-width: 700px;
+    place-self: center;
 }
 
 .Game_startButton {
     width: 100%;
     padding: 0.5rem;
+    border: solid 1px #FFFFFF30;
+    border-radius: 5px;
+    background-color: #b58863;
+    color: #FFFFFF;
+    font-size: 1rem;
+}
+
+.Game_startButton:hover {
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .Game_darkMode > div > p {
     color: #FFFFFF;
+}
+
+.Game_darkMode > div > .Game_startButton {
+    background-color: #769656;
+}
+
+@media screen and (min-width: 700px) {
+    .Game_scoreTimeContainer {
+        padding: 0;
+    }
+    
+    .Game_buttonsContainer {
+        padding: 0 ;
+    }
 }

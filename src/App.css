@@ -1,4 +1,10 @@
-body, h1, p, h2 {
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+body, h1, p, h2, h3 {
     margin: 0;
 }
 
@@ -8,9 +14,14 @@ a {
     cursor: pointer;
 }
 
-h1, h2, p, input, button, a {
+h1, h2, h3, p, input, button, a, label, span {
     font-family: 'Lato', sans-serif;
-    color: #2c2c2c;
+    color: #000000;
+}
+
+button {
+    background: none;
+    border: none;
 }
 
 .App {

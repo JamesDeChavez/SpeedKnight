@@ -12,11 +12,19 @@
     font-size: 1.2rem;
 }
 
+.Navbar_title:hover {
+    opacity: 0.8;
+}
+
 .Navbar_hamburgerContainer {
     margin: 0;
     padding: 0;
     background: none;
     border: none;
+}
+
+.Navbar_hamburgerContainer:hover {
+    cursor: pointer;
 }
 
 .Navbar_hamburger {
@@ -29,7 +37,6 @@
 .Navbar_navButtonsContainer {
     display: none;
     background: #FFFFFF;
-    border: solid 1px #00000030;
     position: absolute;
     top: 100%;
     right: 0;
@@ -43,15 +50,32 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.Navbar_navButton:hover {
+    font-weight: bold;
+}
+
+.Navbar_navButton:first-child {
+    color: #000000;
+}
+
+.Navbar_navButton:first-child:hover {
+    font-weight: 400;
+    cursor: inherit;
 }
 
 .Navbar_navButton:hover {
     cursor: pointer;
 }
 
+.Navbar_darkMode {
+    border-color: #ffffff30;
+}
+
 .Navbar_darkMode > h1 > a,
-.Navbar_darkMode > div > button,
-.Navbar_darkMode > div > button > a {
+.Navbar_darkMode > div > .Navbar_navButton {
     color: #FFFFFF;
 }
 
@@ -59,6 +83,49 @@
     background-color: #2d2d2d;
 }
 
+.Navbar_darkMode > div > .Navbar_navButton {
+    border-color: #FFFFFF30;
+}
+
 .Navbar_darkMode > button > svg > rect {
     fill: #FFFFFF;
+}
+
+@media screen and (min-width: 800px) {
+
+    .Navbar_title {
+        font-size: 1.5rem;
+    }
+
+    .Navbar_hamburgerContainer {
+        display: none;
+    }
+
+    .Navbar_navButtonsContainer {
+        position: inherit;
+        display: flex !important;
+        transform: none !important;
+        top: 0;
+        gap: 0.5rem;
+    }
+
+    .Navbar_navButton {
+        border: none;
+        border-radius: 5px;
+        background-color: #b58863;
+        color: #FFFFFF;
+    }
+
+    .Navbar_navButton:first-child {
+        background: none;
+    }
+
+    .Navbar_darkMode > div > .Navbar_navButton {
+        background-color: #769656;
+    }
+
+    .Navbar_darkMode > div > .Navbar_navButton:first-child {
+        background: none;
+    }
+
 }
