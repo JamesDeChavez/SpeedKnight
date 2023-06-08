@@ -15,7 +15,7 @@ const Game: React.FC<Props> = ({ root }) => {
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
-    const [modalVisible, setModalVisible] = useState(false)
+    const [modalVisible, setModalVisible] = useState(true)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<number>()
 
