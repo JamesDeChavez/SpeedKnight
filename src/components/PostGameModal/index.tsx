@@ -10,7 +10,7 @@ interface Props {
 }
 
 const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {    
-    const { darkMode } = useContext(GlobalContext)
+    const { darkMode, userLoggedIn } = useContext(GlobalContext)
     const className = 'PostGameModal'
     return (
         <div className={classNames(className, darkMode && className + '_darkMode')}>
@@ -40,8 +40,11 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
                         <p className={`${className}_metricNumber`}>30</p>
                         <p className={`${className}_metricText`}>Global Average</p>
                     </div>
+                </div>
+                <div className={`${className}_shareContainer`}>
+                    <button className={`${className}_shareButton`}>Share Results</button>
                 </div>                    
-                <div className={`${className}_callToAction`}>
+                <div className={`${className}_callToAction`} style={{ display: userLoggedIn ? 'none' : 'block' }}>
                     <NavLink to={'/login'} className={`${className}_callToActionLink`} onClick={() => setModalVisible(false)}>
                         Log in 
                     </NavLink>

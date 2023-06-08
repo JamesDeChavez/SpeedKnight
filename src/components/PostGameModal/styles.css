@@ -82,11 +82,24 @@
     font-size: 0.8rem;
 }
 
+.PostGameModal_shareContainer,
 .PostGameModal_callToAction {
-    margin-top: 1rem;
     padding-top: 1rem;
     border-top: solid 1px #00000030;
     text-align: center;
+}
+
+.PostGameModal_shareButton {
+    background-color: #b58863;
+    width: 100%;
+    padding: 0.5rem;
+    border-radius: 5px;
+    color: #FFFFFF;
+}
+
+.PostGameModal_shareButton:hover {
+    cursor: pointer;
+    font-weight: bold;
 }
 
 .PostGameModal_callToActionLink {
@@ -109,6 +122,10 @@
 .PostGameModal_darkMode > div > .PostGameModal_scoreContainer,
 .PostGameModal_darkMode > div > div > .PostGameModal_metric {
     border-color: #769656;
+}
+
+.PostGameModal_darkMode > div > div > .PostGameModal_shareButton {
+    background-color: #769656;
 }
 
 .PostGameModal_darkMode > div > div > button,

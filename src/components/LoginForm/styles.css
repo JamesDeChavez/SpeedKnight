@@ -42,9 +42,67 @@
     color: red;
 }
 
+.LoginForm_seperatorContainer {
+    position: relative;
+}
+
+.LoginForm_seperator {
+    text-align: center;
+}
+.LoginForm_seperator::before {
+    position: absolute;
+    content: "";
+    height: 0;
+    width: calc(50% - 1rem);
+    top: 50%;
+    left: 0;
+    border-bottom: solid 1px #00000080;
+}
+.LoginForm_seperator::after {
+    position: absolute;
+    content: "";
+    height: 0;
+    width: calc(50% - 1rem);
+    top: 50%;
+    right: 0;
+    border-bottom: solid 1px #00000080;
+}
+
+.LoginForm_oauthContainer {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 90%;
+    max-width: 500px;
+    justify-self: center;
+}
+
+.LoginForm_oauthButton {
+    display: flex;
+    place-content: center;
+    align-items: center;
+    gap: 1rem;
+    border: solid 1px #00000080;
+    border-radius: 5px;
+    padding: 0.5rem;
+    font-size: 1rem;
+}
+
+.LoginForm_oauthButton:hover {
+    cursor: pointer;
+    font-weight: bold;
+    border-color: #000000;
+}
+
 .LoginForm_darkMode > h2,
+.LoginForm_darkMode > div > p,
 .LoginForm_darkMode > div > label {
     color: #FFFFFF;
+}
+
+.LoginForm_darkMode > div > .LoginForm_seperator::before,
+.LoginForm_darkMode > div > .LoginForm_seperator::after {
+    border-color: #FFFFFF30;
 }
 
 .LoginForm_darkMode > div > input {
@@ -55,5 +113,10 @@
 
 .LoginForm_darkMode > div > .LoginForm_submitButton {
     background-color: #769656;
+}
+
+.LoginForm_oauthContainer_darkMode > .LoginForm_oauthButton {
+    border-color: #FFFFFF50;
+    color: #FFFFFF;
 }
 

@@ -7,7 +7,7 @@ import { gsap } from 'gsap'
 import './styles.css'
 
 const Instructions = () => {
-    const { darkMode } = useContext(GlobalContext)
+    const { darkMode, userLoggedIn } = useContext(GlobalContext)
     const root = useRef(null)    
 
     useLayoutEffect(() => {
@@ -36,7 +36,7 @@ const Instructions = () => {
                 <ExampleBoard />
                 <p>Each red tile above represents a valid move you can click</p>
             </div>
-            <div className={`${className}_callToAction`}>
+            <div className={`${className}_callToAction`} style={{display: userLoggedIn ? 'none' : 'block'}}>
                 <NavLink to={'/login'} className={`${className}_callToActionLink`}>
                     Log in 
                 </NavLink>

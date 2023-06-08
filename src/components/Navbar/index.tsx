@@ -7,7 +7,7 @@ import { NavLink } from 'react-router-dom'
 import './styles.css'
 
 const Navbar = () => {
-    const { darkMode } = useContext(GlobalContext)
+    const { darkMode, userLoggedIn, setUserLoggedIn } = useContext(GlobalContext)
     const [navVisible, setNavVisible] = useState(false)
     const lineOne = useRef(null)
     const lineTwo = useRef(null)
@@ -74,10 +74,18 @@ const Navbar = () => {
         setNavVisible(prevState => !prevState)
     }
 
-    const handleLinkClick = (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    const handleLinkClick = () => {
         if (navVisible && clickTimeline.current) {
             clickTimeline.current.reverse()
         }
+        setNavVisible(false)
+    }
+
+    const handleLogout = () => {
+        if (navVisible && clickTimeline.current) {
+            clickTimeline.current.reverse()
+        }
+        setUserLoggedIn(false)
         setNavVisible(false)
     }
 
@@ -122,11 +130,17 @@ const Navbar = () => {
                 <NavLink className={`${className}_navButton`} to="/instructions" onClick={handleLinkClick} >
                     How to Play
                 </NavLink>
-                <NavLink className={`${className}_navButton`} to="/login" onClick={handleLinkClick} >
+                <NavLink className={`${className}_navButton`} to="/login" onClick={handleLinkClick} style={{display: userLoggedIn ? 'none' : 'block'}} >
                     Log In
                 </NavLink>
-                <NavLink className={`${className}_navButton`} to="/register" onClick={handleLinkClick} >
+                <NavLink className={`${className}_navButton`} to="/register" onClick={handleLinkClick} style={{display: userLoggedIn ? 'none' : 'block'}} >
                     Create Account
+                </NavLink>
+                <NavLink className={`${className}_navButton`} to="/profile" onClick={handleLinkClick} style={{display: userLoggedIn ? 'block' : 'none'}} >
+                    Profile
+                </NavLink>
+                <NavLink className={`${className}_navButton`} to="/" onClick={handleLogout} style={{display: userLoggedIn ? 'block' : 'none'}} >
+                    Logout
                 </NavLink>
             </div>
         </div>
