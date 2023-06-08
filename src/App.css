@@ -14,7 +14,7 @@ a {
     cursor: pointer;
 }
 
-h1, h2, h3, p, input, button, a, label, span {
+h1, h2, h3, p, input, button, a, label, span, li {
     font-family: 'Lato', sans-serif;
     color: #000000;
 }

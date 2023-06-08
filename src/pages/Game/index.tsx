@@ -1,9 +1,10 @@
 import React, { useState, useRef, useEffect, useLayoutEffect, useContext } from 'react'
 import Board from '../../components/Board'
-import './styles.css'
 import { gsap } from 'gsap'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
+import PostGameModal from '../../components/PostGameModal'
+import './styles.css'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -14,6 +15,7 @@ const Game: React.FC<Props> = ({ root }) => {
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
+    const [modalVisible, setModalVisible] = useState(false)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<number>()
 
@@ -23,11 +25,11 @@ const Game: React.FC<Props> = ({ root }) => {
 
     useLayoutEffect(() => {
         let gsapContext = gsap.context(() => {
+
         //Entrance animation on render
         gsap.fromTo(`.${className}_score`, {duration: 0.5, x: '-100%'}, {x: 0})
         gsap.fromTo(`.${className}_time`, {duration: 0.5, x: '100%'}, {x: 0})
         gsap.fromTo(`.${className}_startButton`, {duration: 0.5, y: 150}, {y: 0})
-
 
         return () => gsapContext.revert()
         }, root)
@@ -46,7 +48,8 @@ const Game: React.FC<Props> = ({ root }) => {
         intervalRef.current = setInterval(() => {
         if (timeRef.current <= 0) {
             clearInterval(intervalRef.current)
-            setGameActive(false) 
+            setGameActive(false)
+            setModalVisible(true)
             return
         }
         setTime(time => time - 1)
@@ -67,6 +70,7 @@ const Game: React.FC<Props> = ({ root }) => {
                     {gameActive ? 'Quit Game' : 'Start Game'}
                 </button>
             </div>
+            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} />}  
         </div>
     )
 }

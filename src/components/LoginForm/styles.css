@@ -38,6 +38,10 @@
     font-weight: bold;
 }
 
+.LoginForm_error {
+    color: red;
+}
+
 .LoginForm_darkMode > h2,
 .LoginForm_darkMode > div > label {
     color: #FFFFFF;
