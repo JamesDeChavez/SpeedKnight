@@ -5,5 +5,93 @@
     max-width: 500px;
     justify-self: center;
     padding-top: 2rem;
+    gap: 2rem;
+}
+
+.Profile_titleContainer {
+    display: grid;
+    grid-template-columns: auto 1fr auto;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.Profile_knightContainer {
+    display: flex;
+    place-content: center;
+    padding: 0.5rem;
+    width: 4rem;
+    height: auto;
+    background-color: #f0d9b5;
+    border: solid 1px #b58863;
+    border-radius: 20rem;
+}
+
+.Profile_editContainer {
+    display: flex;
+    align-items: center;
     gap: 0.2rem;
+}
+
+.Profile_editContainer:hover {
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+.Profile_form {
+    display: grid;
+    gap: 1rem;
+}
+
+.Profile_contentContainer {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.Profile_input {
+    padding: 0.5rem;
+    border-radius: 5px;
+}
+
+.Profile_button {
+    color: #FFFFFF;
+    background-color: #b58863;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.Profile_button:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.Profile_error {
+    color: red;
+}
+
+.Profile_darkMode > div > button,
+.Profile_darkMode > form > div > label,
+.Profile_darkMode > div > button > svg > path,
+.Profile_darkMode > div > h2 {
+    color: #FFFFFF;
+    fill: #FFFFFF;
+}
+
+.Profile_darkMode > form > div > input {
+    background-color: #3c3a38;
+    border: solid 1px #FFFFFF;
+    color: #FFFFFF;
+}
+
+.Profile_darkMode > form > div > input:disabled {
+    border-color: #FFFFFF30;
+
+}
+
+.Profile_darkMode > div > .Profile_knightContainer {
+    background-color: #769656;
+    border-color: #FFFFFF;
+}
+
+.Profile_darkMode > form > div > button {
+    background-color: #769656;
 }

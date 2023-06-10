@@ -1,0 +1,38 @@
+.UserMetrics {
+    display: grid;
+    gap: 1rem;
+}
+
+.UserMetrics_title {
+    font-size: 1rem;
+}
+
+.UserMetrics_metricsContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.UserMetrics_metric {
+    border: solid 1px #b58863;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.UserMetrics_metricNumber {
+    font-size: 1.2rem;
+}
+
+.UserMetrics_metricText {
+    font-size: 0.8rem;
+}
+
+.UserMetrics_darkMode > div > div > p,
+.UserMetrics_darkMode > h3 {
+    color: #FFFFFF
+}
+
+.UserMetrics_darkMode > div > .UserMetrics_metric {
+    border-color: #769656;
+}

@@ -12,7 +12,7 @@ import './styles.css'
 
 const LoginForm = () => {
     const { darkMode } = useContext(GlobalContext)
-    const [email, setEmail] = useState('')
+    const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
     const [oauthData, setOauthData] = useState<Omit<TokenResponse, "error" | "error_description" | "error_uri">>()
@@ -26,7 +26,7 @@ const LoginForm = () => {
 
     useEffect(() => {
         setError('')
-    }, [email, password])
+    }, [username, password])
 
     useEffect(() => {
         if (!oauthData) return
@@ -64,11 +64,11 @@ const LoginForm = () => {
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (!email || !password) {
+        if (!username || !password) {
             setError('Please fill in all fields')
             return
         }
-        console.log({ email, password })
+        console.log({ username, password })
         navigate('/')
     }
 
@@ -88,8 +88,8 @@ const LoginForm = () => {
         <form className={classNames(className, darkMode && className + '_darkMode')} ref={root} onSubmit={handleSubmit}>
             <h2 className={`${className}_title`}>Log in</h2>
             <div className={`${className}_inputContainer`}>
-                <label className={`${className}_label`} htmlFor="email">Email</label>
-                <input className={`${className}_input`} type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                <label className={`${className}_label`} htmlFor="username">Username</label>
+                <input className={`${className}_input`} type="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div className={`${className}_inputContainer`}>
                 <label className={`${className}_label`} htmlFor="password">Password</label>

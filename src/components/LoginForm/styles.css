@@ -5,7 +5,7 @@
     width: 90%;
     max-width: 500px;
     justify-self: center;
-    padding-top: 2rem;
+    padding-top: 0.5rem;
 }
 
 .LoginForm_inputContainer {
@@ -118,5 +118,11 @@
 .LoginForm_oauthContainer_darkMode > .LoginForm_oauthButton {
     border-color: #FFFFFF50;
     color: #FFFFFF;
+}
+
+@media screen and (min-height: 700px) {
+    .LoginForm {
+        padding-top: 2rem;
+    }
 }
 

@@ -5,7 +5,7 @@
     width: 90%;
     max-width: 500px;
     justify-self: center;
-    padding-top: 2rem;
+    padding-top: 0.5rem;
 }
 
 .RegisterForm_inputContainer {
@@ -118,4 +118,11 @@
 .RegisterForm_oauthContainer_darkMode > .RegisterForm_oauthButton {
     border-color: #FFFFFF50;
     color: #FFFFFF;
+}
+
+
+@media screen and (min-height: 700px) {
+    .RegisterForm {
+        padding-top: 2rem;
+    }
 }

@@ -6,12 +6,13 @@ import { useNavigate } from 'react-router-dom'
 import GoogleSVG from '../GoogleSVG'
 import axios from 'axios'
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google'
-import './styles.css'
 import TwitterSVG from '../TwitterSVG'
 import FacebookSVG from '../FacebookSVG'
+import './styles.css'
 
 const RegisterForm = () => {
     const { darkMode } = useContext(GlobalContext)
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')
@@ -63,7 +64,7 @@ const RegisterForm = () => {
     
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
-        if (!email || !password || !repeatPassword) {
+        if (!username || !email || !password || !repeatPassword) {
             setError('Please fill in all fields')
             return
         }
@@ -71,7 +72,7 @@ const RegisterForm = () => {
             setError('Passwords do not match')
             return
         }
-        console.log({ email, password, repeatPassword })
+        console.log({ username, email, password, repeatPassword })
         navigate('/')
     }
 
@@ -89,6 +90,10 @@ const RegisterForm = () => {
     return (<>
         <form className={classNames(className, darkMode && className + '_darkMode')} ref={root} onSubmit={handleSubmit}>
             <h2 className={`${className}_title`}>Create Account</h2>
+            <div className={`${className}_inputContainer`}>
+                <label className={`${className}_label`} htmlFor="username">Username</label>
+                <input className={`${className}_input`} type="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+            </div>
             <div className={`${className}_inputContainer`}>
                 <label className={`${className}_label`} htmlFor="email">Email</label>
                 <input className={`${className}_input`} type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
