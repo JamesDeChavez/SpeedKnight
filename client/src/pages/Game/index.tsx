@@ -15,9 +15,9 @@ const Game: React.FC<Props> = ({ root }) => {
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
-    const [modalVisible, setModalVisible] = useState(true)
+    const [modalVisible, setModalVisible] = useState(false)
     const timeRef = useRef<number>(0)
-    const intervalRef = useRef<number>()
+    const intervalRef = useRef<NodeJS.Timer>()
 
     useEffect(() => {
         timeRef.current = time
@@ -38,21 +38,21 @@ const Game: React.FC<Props> = ({ root }) => {
     const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()    
         if (gameActive) {
-        setGameActive(false)
-        clearInterval(intervalRef.current)
-        return
+            setGameActive(false)
+            clearInterval(intervalRef.current)
+            return
         }
         setTime(60)
         setScore(0)
         setGameActive(true)
         intervalRef.current = setInterval(() => {
-        if (timeRef.current <= 0) {
-            clearInterval(intervalRef.current)
-            setGameActive(false)
-            setModalVisible(true)
-            return
-        }
-        setTime(time => time - 1)
+            if (timeRef.current <= 0) {
+                clearInterval(intervalRef.current)
+                setGameActive(false)
+                setModalVisible(true)
+                return
+            }
+            setTime(time => time - 1)
         }, 1000)
         setGameActive(true)
     }

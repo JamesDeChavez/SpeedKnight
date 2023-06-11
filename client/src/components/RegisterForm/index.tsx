@@ -9,9 +9,10 @@ import { TokenResponse, useGoogleLogin } from '@react-oauth/google'
 import TwitterSVG from '../TwitterSVG'
 import FacebookSVG from '../FacebookSVG'
 import './styles.css'
+import API from '../../api'
 
 const RegisterForm = () => {
-    const { darkMode } = useContext(GlobalContext)
+    const { darkMode, setUserLoggedIn } = useContext(GlobalContext)
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
@@ -62,7 +63,7 @@ const RegisterForm = () => {
         }, root2)
     }, [])
     
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!username || !email || !password || !repeatPassword) {
             setError('Please fill in all fields')
@@ -72,8 +73,16 @@ const RegisterForm = () => {
             setError('Passwords do not match')
             return
         }
-        console.log({ username, email, password, repeatPassword })
-        navigate('/')
+        try {
+            const userData = await API.User.register(username, email, password)
+            console.log('userData', userData)
+            if (userData) setUserLoggedIn(true)
+            navigate('/')
+        } catch (error) {
+            setError("Something went wrong")
+            return
+        }
+            
     }
 
     const handleTwitterClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

@@ -3,15 +3,16 @@ import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
 import { gsap } from 'gsap'
 import { useNavigate } from 'react-router-dom'
-import { TokenResponse, useGoogleLogin} from '@react-oauth/google'
-import axios from 'axios'
+import { TokenResponse, useGoogleLogin } from '@react-oauth/google'
 import GoogleSVG from '../GoogleSVG'
 import TwitterSVG from '../TwitterSVG'
 import FacebookSVG from '../FacebookSVG'
+import axios from 'axios'
+import API from '../../api'
 import './styles.css'
 
 const LoginForm = () => {
-    const { darkMode } = useContext(GlobalContext)
+    const { darkMode, setUserLoggedIn } = useContext(GlobalContext)
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')
     const [error, setError] = useState('')
@@ -62,14 +63,20 @@ const LoginForm = () => {
     }, [])
 
     
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!username || !password) {
             setError('Please fill in all fields')
             return
         }
-        console.log({ username, password })
-        navigate('/')
+        try {
+            const userData = await API.User.login(username, password)
+            console.log('userData', userData)
+            if (userData) setUserLoggedIn(true)
+            navigate('/')
+        } catch (error) {
+            setError("Something went wrong")
+        }
     }
 
     const handleTwitterClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {

@@ -24,6 +24,10 @@ button {
     border: none;
 }
 
+button, a {
+    user-select: none;
+}
+
 .App {
     display: grid;
     grid-template-rows: auto 1fr;

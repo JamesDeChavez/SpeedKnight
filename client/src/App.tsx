@@ -11,7 +11,7 @@ import Profile from './pages/Profile'
 import './App.css'
 
 function App() {
-  const [userLoggedIn, setUserLoggedIn] = useState(true)
+  const [userLoggedIn, setUserLoggedIn] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const root = useRef(null)
 

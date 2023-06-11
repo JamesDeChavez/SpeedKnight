@@ -14,6 +14,11 @@
     place-self: center;
 }
 
+.Game_score,
+.Game_time {
+    user-select: none;
+}
+
 .Game_buttonsContainer {
     display: flex;
     padding: 0 0.5rem;
@@ -48,6 +53,11 @@
 @media screen and (min-width: 700px) {
     .Game_scoreTimeContainer {
         padding: 0;
+    }
+
+    .Game_score,
+    .Game_time {
+        font-size: 1.2rem;
     }
     
     .Game_buttonsContainer {
