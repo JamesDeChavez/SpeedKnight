@@ -79,11 +79,6 @@ const LoginForm = () => {
         }
     }
 
-    const handleTwitterClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        console.log('test twitter click')
-    }
-
     const handleFacebookClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         console.log('test facebook click')
@@ -115,10 +110,10 @@ const LoginForm = () => {
                 <GoogleSVG />
                 Sign in with Google
             </button>
-            <button className={`${className}_oauthButton`} onClick={handleTwitterClick}>
+            <a className={`${className}_oauthButton`} href='http://localhost:3000/auth/twitter'>
                 <TwitterSVG />
                 Sign in with Twitter
-            </button>
+            </a>
             <button className={`${className}_oauthButton`} onClick={handleFacebookClick}>
                 <FacebookSVG />
                 Sign in with Facebook

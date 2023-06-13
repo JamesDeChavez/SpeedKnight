@@ -20,13 +20,21 @@
   },
   "homepage": "https://github.com/JamesDeChavez/SpeedKnight#readme",
   "dependencies": {
+    "@superfaceai/passport-twitter-oauth2": "^1.2.3",
     "cors": "^2.8.5",
-    "express": "^4.18.2"
+    "dotenv": "^16.1.4",
+    "express": "^4.18.2",
+    "express-session": "^1.17.3",
+    "passport": "^0.6.0",
+    "passport-twitter": "^0.1.5"
   },
   "devDependencies": {
+    "@types/cookie-parser": "^1.4.3",
     "@types/cors": "^2.8.13",
     "@types/express": "^4.17.17",
+    "@types/express-session": "^1.17.7",
     "@types/node": "^20.3.0",
+    "@types/passport-twitter": "^1.0.37",
     "nodemon": "^2.0.22",
     "rimraf": "^5.0.1",
     "ts-node": "^10.9.1",

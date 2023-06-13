@@ -1,7 +1,7 @@
-import UserAPI from "./user";
+import UserAPI from "./user"
 
 const API = {
-    User: UserAPI
+    User: UserAPI,
 }
 
 export default API

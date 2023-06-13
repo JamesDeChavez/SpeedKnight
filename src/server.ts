@@ -1,19 +1,25 @@
 import express from 'express'
+import passport from 'passport'
+import session from 'express-session'
+import routes from './routes'
 import cors from 'cors'
-import apiRoutes from './api'
+import './config/twitter'
+require('dotenv').config()
 
-const port = 3000
 const app = express()
-app.use(cors())
+
 app.use(express.json())
+app.use(cors())
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
+app.use(passport.initialize())
+app.use(session({ 
+  secret: 'keyboard cat', 
+  resave: false, 
+  saveUninitialized: true 
+}))
+
+app.use(routes)
+
+app.listen(3000, () => {
+  console.log(`Listening on ${process.env.BASE_URL}`)
 })
-
-app.use(apiRoutes)
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
-
