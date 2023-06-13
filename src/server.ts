@@ -3,7 +3,9 @@ import passport from 'passport'
 import session from 'express-session'
 import routes from './routes'
 import cors from 'cors'
+import './config/serialize'
 import './config/twitter'
+import './config/facebook'
 require('dotenv').config()
 
 const app = express()

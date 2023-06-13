@@ -2,14 +2,6 @@ import passport from 'passport'
 import { Strategy } from '@superfaceai/passport-twitter-oauth2'
 require('dotenv').config()
 
-
-passport.serializeUser((user: any, done: any) => {
-    done(null, user)
-  })
-passport.deserializeUser((obj: any, done: any) => {
-    done(null, obj)
-})
-
 passport.use(
     new Strategy(
       {

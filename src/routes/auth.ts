@@ -15,6 +15,19 @@ router.get(
     passport.authenticate('twitter'),
     (req: any, res: any) => {
         const userData = JSON.stringify(req.user, undefined, 2)
+        console.log('session', req.session)
+        res.redirect('https://localhost:5173/')
+    }
+)
+
+router.get('/facebook',
+  passport.authenticate('facebook'));
+
+router.get('/facebook/callback',
+    passport.authenticate('facebook'),
+    (req: any, res: any) => {
+        const userData = JSON.stringify(req.user, undefined, 2)
+        console.log('session', req.session)
         res.redirect('https://localhost:5173/')
     }
 )

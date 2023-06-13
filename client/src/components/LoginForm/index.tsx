@@ -114,10 +114,10 @@ const LoginForm = () => {
                 <TwitterSVG />
                 Sign in with Twitter
             </a>
-            <button className={`${className}_oauthButton`} onClick={handleFacebookClick}>
+            <a className={`${className}_oauthButton`} href='http://localhost:3000/auth/facebook'>
                 <FacebookSVG />
                 Sign in with Facebook
-            </button>
+            </a>
         </div>
     </>)
 }
