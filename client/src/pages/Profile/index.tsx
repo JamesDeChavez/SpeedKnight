@@ -5,6 +5,7 @@ import UserMetrics from '../../components/UserMetrics'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
 import './styles.css'
+import API from '../../api'
 
 const Profile = () => {
     const { darkMode } = useContext(GlobalContext)
@@ -29,13 +30,22 @@ const Profile = () => {
         }
     }
 
-    const handleFormSubmit = (e: React.FormEvent) => {
+    const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
         if (!username || !email || !password) {
             setError('Please fill out all fields')
             return
         }
-        console.log(username, email, password)
+        try {
+            const userData = await API.User.update(username, email, password)
+            setUsername(userData.username)
+            setEmail(userData.email)
+            setPassword(userData.password)
+            setEditActive(false)
+            return
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const className = 'Profile'

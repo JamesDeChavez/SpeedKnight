@@ -10,4 +10,8 @@ router.post("/register", (req, res) => {
   setTimeout(() => res.send(req.body), 1000)
 })
 
+router.put("/update", (req, res) => {
+  setTimeout(() => res.send(req.body), 1000)
+})
+
 export default router

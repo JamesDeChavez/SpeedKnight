@@ -2,9 +2,8 @@ import { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
-import './styles.css'
-import axios from 'axios'
 import API from '../../api'
+import './styles.css'
 
 interface Props {
     score: number,
@@ -15,8 +14,8 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
     const { darkMode, userLoggedIn } = useContext(GlobalContext)
     const [userBest, setUserBest] = useState<number | string>('N/A')
     const [userAverage, setUserAverage] = useState<number | string>('N/A')
-    const [globalBest, setGlobalBest] = useState(0)
-    const [globalAverage, setGlobalAverage] = useState(0)
+    const [globalBest, setGlobalBest] = useState<number | string>('-')
+    const [globalAverage, setGlobalAverage] = useState<number | string>('-')
 
     useEffect(() => {
         setUserBest(38)
