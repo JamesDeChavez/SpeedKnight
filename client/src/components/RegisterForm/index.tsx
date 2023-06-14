@@ -8,8 +8,8 @@ import axios from 'axios'
 import { TokenResponse, useGoogleLogin } from '@react-oauth/google'
 import TwitterSVG from '../TwitterSVG'
 import FacebookSVG from '../FacebookSVG'
-import './styles.css'
 import API from '../../api'
+import './styles.css'
 
 const RegisterForm = () => {
     const { darkMode, setUserLoggedIn } = useContext(GlobalContext)
@@ -85,16 +85,6 @@ const RegisterForm = () => {
             
     }
 
-    const handleTwitterClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        console.log('test twitter click')
-    }
-
-    const handleFacebookClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        console.log('test facebook click')
-    }
-
     const className = 'RegisterForm'
     return (<>
         <form className={classNames(className, darkMode && className + '_darkMode')} ref={root} onSubmit={handleSubmit}>
@@ -128,14 +118,14 @@ const RegisterForm = () => {
                 <GoogleSVG />
                 Register with Google
             </button>
-            <button className={`${className}_oauthButton`} onClick={handleTwitterClick}>
+            <a className={`${className}_oauthButton`} href='http://localhost:3000/auth/twitter'>
                 <TwitterSVG />
                 Register with Twitter
-            </button>
-            <button className={`${className}_oauthButton`} onClick={handleFacebookClick}>
+            </a>
+            <a className={`${className}_oauthButton`} href='http://localhost:3000/auth/facebook'>
                 <FacebookSVG />
                 Register with Facebook
-            </button>
+            </a>
         </div>
     </>)
 }
