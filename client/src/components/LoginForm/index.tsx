@@ -79,12 +79,6 @@ const LoginForm = () => {
         }
     }
 
-    const handleFacebookClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
-        e.preventDefault()
-        console.log('test facebook click')
-    }
-
-
     const className = 'LoginForm'
     return (<>
         <form className={classNames(className, darkMode && className + '_darkMode')} ref={root} onSubmit={handleSubmit}>

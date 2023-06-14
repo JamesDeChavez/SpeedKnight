@@ -5,6 +5,7 @@ import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
 import PostGameModal from '../../components/PostGameModal'
 import './styles.css'
+import API from '../../api'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -15,13 +16,32 @@ const Game: React.FC<Props> = ({ root }) => {
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
-    const [modalVisible, setModalVisible] = useState(false)
+    const [modalVisible, setModalVisible] = useState(true)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
+    const scoreRef = useRef<number>(score)
 
     useEffect(() => {
         timeRef.current = time
     }, [time])
+
+    useEffect(() => {
+        scoreRef.current = score
+    }, [score])
+
+    useEffect(() => {
+        if (timeRef.current > 0 || gameActive) return
+        const submitScore = async () => {
+            try {
+                const userScores = await API.Score.postUserScore('testId', scoreRef.current)
+                console.log(userScores)
+                return
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        submitScore()
+    }, [gameActive])
 
     useLayoutEffect(() => {
         let gsapContext = gsap.context(() => {

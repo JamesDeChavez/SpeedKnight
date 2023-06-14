@@ -1,7 +1,7 @@
-import { Router } from "express";
+import { Router } from "express"
 import passport from "passport"
 
-const router = Router();
+const router = Router()
 
 router.get(
     "/twitter", 
@@ -21,7 +21,7 @@ router.get(
 )
 
 router.get('/facebook',
-  passport.authenticate('facebook'));
+  passport.authenticate('facebook'))
 
 router.get('/facebook/callback',
     passport.authenticate('facebook'),

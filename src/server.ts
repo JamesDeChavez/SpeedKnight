@@ -9,19 +9,18 @@ import './config/facebook'
 require('dotenv').config()
 
 const app = express()
-
 app.use(express.json())
 app.use(cors())
 
 app.use(passport.initialize())
 app.use(session({ 
-  secret: 'keyboard cat', 
+  secret: process.env.SESSION_SECRET || 'SESSION_SECRET', 
   resave: false, 
   saveUninitialized: true 
 }))
 
 app.use(routes)
 
-app.listen(3000, () => {
+app.listen(process.env.PORT, () => {
   console.log(`Listening on ${process.env.BASE_URL}`)
 })

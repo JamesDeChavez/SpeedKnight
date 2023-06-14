@@ -1,8 +1,10 @@
-import { useContext } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import { NavLink } from 'react-router-dom'
-import './styles.css'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
+import './styles.css'
+import axios from 'axios'
+import API from '../../api'
 
 interface Props {
     score: number,
@@ -11,6 +13,28 @@ interface Props {
 
 const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {    
     const { darkMode, userLoggedIn } = useContext(GlobalContext)
+    const [userBest, setUserBest] = useState<number | string>('N/A')
+    const [userAverage, setUserAverage] = useState<number | string>('N/A')
+    const [globalBest, setGlobalBest] = useState(0)
+    const [globalAverage, setGlobalAverage] = useState(0)
+
+    useEffect(() => {
+        setUserBest(38)
+        setUserAverage(31)
+        const fetchGlobalScores = async () => {
+            try {                
+                const data = await API.Score.getGlobalScores()
+                if (data) {
+                    setGlobalBest(data.global.best)
+                    setGlobalAverage(data.global.average)
+                }
+            } catch (error) {
+                console.log(error)
+            }
+        }
+        fetchGlobalScores()
+    }, [])
+
     const className = 'PostGameModal'
     return (
         <div className={classNames(className, darkMode && className + '_darkMode')}>
@@ -25,19 +49,19 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
                 </div>
                 <div className={`${className}_metricsContainer`}>
                     <div className={`${className}_metric`}>
-                        <p className={`${className}_metricNumber`}>30</p>
+                        <p className={`${className}_metricNumber`}>{userBest}</p>
                         <p className={`${className}_metricText`}>Your Best</p>
                     </div>
                     <div className={`${className}_metric`}>
-                        <p className={`${className}_metricNumber`}>30</p>
+                        <p className={`${className}_metricNumber`}>{userAverage}</p>
                         <p className={`${className}_metricText`}>Your Average</p>
                     </div>
                     <div className={`${className}_metric`}>
-                        <p className={`${className}_metricNumber`}>30</p>
+                        <p className={`${className}_metricNumber`}>{globalBest}</p>
                         <p className={`${className}_metricText`}>Global Best</p>
                     </div>
                     <div className={`${className}_metric`}>
-                        <p className={`${className}_metricNumber`}>30</p>
+                        <p className={`${className}_metricNumber`}>{globalAverage}</p>
                         <p className={`${className}_metricText`}>Global Average</p>
                     </div>
                 </div>
