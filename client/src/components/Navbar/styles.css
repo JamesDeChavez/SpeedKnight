@@ -54,7 +54,7 @@
 }
 
 .Navbar_navButton:hover {
-    font-weight: bold;
+    opacity: 0.8
 }
 
 .Navbar_navButton:first-child {
