@@ -21,6 +21,7 @@ function App() {
   const root = useRef(null)
 
   useEffect(() => {
+    console.log(userData)
     const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
       switch (event) {
         case "signIn":
