@@ -4,6 +4,7 @@ import LightModeToggle from '../LightModeToggle'
 import classNames from 'classnames'
 import GlobalContext from '../../utils/GlobalContext'
 import { NavLink } from 'react-router-dom'
+import { Auth } from 'aws-amplify'
 import './styles.css'
 
 const Navbar = () => {
@@ -81,12 +82,17 @@ const Navbar = () => {
         setNavVisible(false)
     }
 
-    const handleLogout = () => {
+    const handleLogout = async () => {
         if (navVisible && clickTimeline.current) {
             clickTimeline.current.reverse()
         }
-        setUserLoggedIn(false)
-        setNavVisible(false)
+        try {
+            await Auth.signOut()
+            setUserLoggedIn(false)
+            setNavVisible(false)
+        } catch (error) {
+            console.log(error)
+        }
     }
 
     const className = 'Navbar'

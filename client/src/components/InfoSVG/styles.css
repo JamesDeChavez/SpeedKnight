@@ -1,0 +1,9 @@
+.InfoSVG {
+    aspect-ratio: 1/1;
+    width: 0.9rem;
+    height: auto;
+}
+
+.InfoSVG:hover {
+    cursor: pointer;
+}

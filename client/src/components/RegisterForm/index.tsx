@@ -4,11 +4,8 @@ import classNames from 'classnames'
 import { gsap } from 'gsap'
 import { useNavigate } from 'react-router-dom'
 import GoogleSVG from '../GoogleSVG'
-import axios from 'axios'
-import { TokenResponse, useGoogleLogin } from '@react-oauth/google'
-import TwitterSVG from '../TwitterSVG'
-import FacebookSVG from '../FacebookSVG'
-import API from '../../api'
+import { Auth } from 'aws-amplify'
+import InfoSVG from '../InfoSVG'
 import './styles.css'
 
 const RegisterForm = () => {
@@ -18,35 +15,14 @@ const RegisterForm = () => {
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')
     const [error, setError] = useState('')
-    const [oauthData, setOauthData] = useState<Omit<TokenResponse, "error" | "error_description" | "error_uri">>()
+    const [pwModalVisible, setPwModalVisible] = useState(false)
     const root = useRef(null)
     const root2 = useRef(null)
     const navigate = useNavigate()
-    const googleLogin = useGoogleLogin({
-        onSuccess: tokenResponse => setOauthData(tokenResponse),
-        onError: error => console.log(error),
-    })
 
     useEffect(() => {
         setError('')
-    }, [email, password])
-
-    useEffect(() => {
-        if (!oauthData) return
-        console.log(oauthData)
-        axios.get(
-            `https://www.googleapis.com/oauth2/v1/userinfo?access_token=${oauthData.access_token}`,
-            { headers: {
-                Authorization: `Bearer ${oauthData.access_token}`,
-                Accept: 'application/json'
-            }}
-        ).then(res => {
-            const oauthEmail = res.data.email
-            console.log('oauthEmail', oauthEmail)
-        }).catch(err => {
-            console.log(err)
-        })
-    }, [oauthData])
+    }, [username, email, password, repeatPassword])
 
     useLayoutEffect(() => {
         const gsapContext = gsap.context(() => {
@@ -73,13 +49,44 @@ const RegisterForm = () => {
             setError('Passwords do not match')
             return
         }
+        const specialFormat = /[`!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/
+        if (password.length < 8) {
+            setError('Password must be at least 8 characters')
+            return
+        } else if (password.search(/[a-z]/) < 0) {
+            setError("Password must contain a lower case letter")
+            return
+        } else if(password.search(/[A-Z]/) < 0) {
+            setError("Password must contain an uppser case letter")
+            return
+        } else if (password.search(/[0-9]/) < 0) {
+            setError("Password must contain a number")
+            return
+        } else if (!specialFormat.test(password)) {
+            setError("Password must contain a special character")
+            return
+        } else if (password[0] === " " || password[password.length - 1] === " ") {
+            setError("Password cannot start or end with a space")
+            return
+        } else {
+            setError('')
+        }
+
         try {
-            const userData = await API.User.register(username, email, password)
-            console.log('userData', userData)
-            if (userData) setUserLoggedIn(true)
-            navigate('/')
+            const { user } = await Auth.signUp({
+                username,
+                password,
+                attributes: { email },
+                autoSignIn: { enabled: true }
+            })
+            console.log('userData', user)
+            if (user) {
+                setUserLoggedIn(true)
+                navigate('/')
+            }
         } catch (error) {
             setError("Something went wrong")
+            console.log('error', error)
             return
         }
             
@@ -98,7 +105,12 @@ const RegisterForm = () => {
                 <input className={`${className}_input`} type="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className={`${className}_inputContainer`}>
-                <label className={`${className}_label`} htmlFor="password">Password</label>
+                <div className={`${className}_passwordLabelContainer`}>
+                    <label className={`${className}_label`} htmlFor="password">Password</label>
+                    <div className={`${className}_svgContainer`} onMouseEnter={() => setPwModalVisible(true)} onMouseLeave={() => setPwModalVisible(false)} >
+                        <InfoSVG />                    
+                    </div>
+                </div>
                 <input className={`${className}_input`} type="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             <div className={`${className}_inputContainer`}>
@@ -109,23 +121,26 @@ const RegisterForm = () => {
                 <input className={`${className}_submitButton`} type="submit" value="Register" />
             </div>
             {error && <p className={`${className}_error`}>{error}</p>}
+            <div className={`${className}_passwordModal`} style={{display: pwModalVisible ? 'block' : 'none'}}>
+                <h3 className={`${className}_passwordModalTitle`}>Password Requirements</h3>
+                <ul className={`${className}_passwordModalList`}>
+                    <li className={`${className}_passwordModalListItem`}>Password must contain a lower case letter</li>
+                    <li className={`${className}_passwordModalListItem`}>Password must contain an upper case letter</li>
+                    <li className={`${className}_passwordModalListItem`}>Password must contain a number</li>
+                    <li className={`${className}_passwordModalListItem`}>Password must contain at least 8 characters</li>
+                    <li className={`${className}_passwordModalListItem`}>Password must contain a special character</li>
+                    <li className={`${className}_passwordModalListItem`}>Password must not contain a leading or trailing space</li>
+                </ul>
+            </div>
             <div className={`${className}_seperatorContainer`}>
                 <p className={`${className}_seperator`}>or</p>
             </div>
         </form>
         <div className={classNames(`${className}_oauthContainer`, darkMode && `${className}_oauthContainer` + '_darkMode')} ref={root2}>
-            <button className={`${className}_oauthButton`} onClick={() => googleLogin()}>
+            <button className={`${className}_oauthButton`} onClick={() => console.log('tbd')}>
                 <GoogleSVG />
                 Register with Google
             </button>
-            <a className={`${className}_oauthButton`} href='http://localhost:3000/auth/twitter'>
-                <TwitterSVG />
-                Register with Twitter
-            </a>
-            <a className={`${className}_oauthButton`} href='http://localhost:3000/auth/facebook'>
-                <FacebookSVG />
-                Register with Facebook
-            </a>
         </div>
     </>)
 }
