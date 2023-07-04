@@ -14,6 +14,8 @@ import './App.css'
 
 Amplify.configure({ Auth: AwsConfigAuth })
 
+console.log('auth', AwsConfigAuth)
+
 function App() {
   const [userData, setUserData] = useState(null)
   const [userLoggedIn, setUserLoggedIn] = useState(false)

@@ -6,8 +6,8 @@ import { determineNewPawnPosition, determineValidMoves } from '../../game/functi
 import classNames from 'classnames'
 import placeAudio from '../../assets/piece-placement.mp3'
 import captureAudio from '../../assets/piece-capture.mp3'
-import './styles.css'
 import GlobalContext from '../../utils/GlobalContext'
+import './styles.css'
 
 interface Props {
     space: BoardSpace,
@@ -32,6 +32,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
 
         //Set audio to play
         const audio = space.pawnVisible ? new Audio(captureAudio) : new Audio(placeAudio)
+        audio.volume = 0.2
         
         //Update Pawn Position, if applicable
         if (space.pawnVisible) {
