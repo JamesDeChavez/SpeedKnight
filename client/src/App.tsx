@@ -14,17 +14,11 @@ import './App.css'
 
 Amplify.configure({ Auth: AwsConfigAuth })
 
-console.log('auth', AwsConfigAuth)
-
 function App() {
   const [userData, setUserData] = useState(null)
   const [userLoggedIn, setUserLoggedIn] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
   const root = useRef(null)
-
-  useEffect(() => {
-    console.log('userData', userData)
-  }, [userData])
 
   useEffect(() => {
     const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
@@ -45,7 +39,6 @@ function App() {
         setUserData(currentUser)
         setUserLoggedIn(true)
       })
-      .catch(() => console.log("Not signed in"))
 
     return unsubscribe
   }, [])
