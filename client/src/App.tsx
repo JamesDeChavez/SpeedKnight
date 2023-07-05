@@ -12,7 +12,12 @@ import { Amplify, Hub, Auth } from 'aws-amplify'
 import classNames from 'classnames'
 import './App.css'
 
-Amplify.configure({ Auth: AwsConfigAuth })
+Amplify.configure({ 
+  Auth: AwsConfigAuth,
+  API: {
+    invokeUrl: import.meta.env.VITE_API_URL
+  }
+})
 
 function App() {
   const [userData, setUserData] = useState(null)
@@ -37,6 +42,7 @@ function App() {
 
     Auth.currentAuthenticatedUser()
       .then(currentUser => {
+        console.log('user', currentUser)
         setUserData(currentUser)
         setUserLoggedIn(true)
       })
