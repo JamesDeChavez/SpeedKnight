@@ -50,8 +50,10 @@ const LoginForm = () => {
                 setUserLoggedIn(true)
                 navigate('/')
             }
-        } catch (error) {
-            setError("Something went wrong")
+        } catch (error: any) {
+            setError(error.toString().includes('UserNotConfirmedException') 
+                ? "Please confirm your email address before loggin in" 
+                : "Something went wrong" )
             console.log(error)
         }
     }

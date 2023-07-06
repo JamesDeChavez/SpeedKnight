@@ -5,6 +5,7 @@ import { gsap } from 'gsap'
 import { useNavigate } from 'react-router-dom'
 import GoogleSVG from '../GoogleSVG'
 import { Auth } from 'aws-amplify'
+import { CognitoHostedUIIdentityProvider } from '@aws-amplify/auth'
 import InfoSVG from '../InfoSVG'
 import './styles.css'
 
@@ -76,13 +77,12 @@ const RegisterForm = () => {
             const { user } = await Auth.signUp({
                 username,
                 password,
-                attributes: { email },
+                attributes: { email, preferred_username: username },
                 autoSignIn: { enabled: true }
             })
             console.log('userData', user)
             if (user) {
-                setUserLoggedIn(true)
-                navigate('/')
+                navigate('/login')
             }
         } catch (error) {
             setError("Something went wrong")
@@ -137,7 +137,7 @@ const RegisterForm = () => {
             </div>
         </form>
         <div className={classNames(`${className}_oauthContainer`, darkMode && `${className}_oauthContainer` + '_darkMode')} ref={root2}>
-            <button className={`${className}_oauthButton`} onClick={() => console.log('tbd')}>
+            <button className={`${className}_oauthButton`} onClick={() => Auth.federatedSignIn({ provider: CognitoHostedUIIdentityProvider.Google })}>
                 <GoogleSVG />
                 Register with Google
             </button>

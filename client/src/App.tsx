@@ -12,12 +12,7 @@ import { Amplify, Hub, Auth } from 'aws-amplify'
 import classNames from 'classnames'
 import './App.css'
 
-Amplify.configure({ 
-  Auth: AwsConfigAuth,
-  API: {
-    invokeUrl: import.meta.env.VITE_API_URL
-  }
-})
+Amplify.configure(AwsConfigAuth)
 
 function App() {
   const [userData, setUserData] = useState(null)
@@ -26,10 +21,13 @@ function App() {
   const root = useRef(null)
 
   useEffect(() => {
-    console.log(userData)
     const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
       switch (event) {
         case "signIn":
+          setUserData(data)
+          setUserLoggedIn(true)
+          break
+        case "signUp":
           setUserData(data)
           setUserLoggedIn(true)
           break
@@ -37,18 +35,27 @@ function App() {
           setUserData(null)
           setUserLoggedIn(false)
           break
+        case "updateUserAttributes":
+          Auth.currentAuthenticatedUser()
+            .then(currentUser => {
+              setUserData(currentUser)
+            })
+          break
       }
     })
 
     Auth.currentAuthenticatedUser()
       .then(currentUser => {
-        console.log('user', currentUser)
         setUserData(currentUser)
         setUserLoggedIn(true)
       })
 
     return unsubscribe
   }, [])
+
+  useEffect(() => {
+    console.log('user data', userData)
+  }, [userData])
 
   const router = createBrowserRouter([
     { path: '/', element: <NavbarWrapper />, children: [
@@ -62,7 +69,7 @@ function App() {
 
   const className = 'App'
   return (
-    <GlobalContext.Provider value={{ darkMode, setDarkMode, userLoggedIn, setUserLoggedIn }}>
+    <GlobalContext.Provider value={{ darkMode, setDarkMode, userLoggedIn, setUserLoggedIn, userData }}>
       <div className={classNames(className, darkMode && className + '_dark')} ref={root}>
         <RouterProvider router={router} />
       </div>

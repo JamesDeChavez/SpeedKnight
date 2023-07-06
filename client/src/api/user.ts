@@ -16,11 +16,10 @@ const UserAPI = {
         })
         return userData.data
     },
-    update: async (username: string, email: string, password: string) => {
+    update: async (username: string, email: string) => {
         const userData = await axios.put('http://localhost:3000/api/user/update', {
             username: username,
-            email: email, 
-            password: password 
+            email: email
         })
         return userData.data
     }

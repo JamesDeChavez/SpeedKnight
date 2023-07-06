@@ -68,6 +68,21 @@
     color: red;
 }
 
+.Profile_deleteContainer {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.Profile_deleteOptions {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.Profile_deleteButton {
+    background-color: #B22222;
+}
+
 .Profile_darkMode > div > button,
 .Profile_darkMode > form > div > label,
 .Profile_darkMode > div > button > svg > path,

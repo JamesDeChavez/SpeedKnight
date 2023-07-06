@@ -4,27 +4,34 @@ import KnightSVG from '../../components/Knight/KnightSVG'
 import UserMetrics from '../../components/UserMetrics'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
+import { Auth } from 'aws-amplify'
+import { useNavigate } from 'react-router-dom'
 import './styles.css'
-import API from '../../api'
 
 const Profile = () => {
-    const { darkMode } = useContext(GlobalContext)
+    const { darkMode, userData, setUserLoggedIn } = useContext(GlobalContext)
     const [editActive, setEditActive] = useState(false)
-    const [username, setUsername] = useState('testUser')
-    const [email, setEmail] = useState('test@email.com')
-    const [password, setPassword] = useState('fakePassword123')
+    const [username, setUsername] = useState('')
+    const [email, setEmail] = useState('')
     const [error, setError] = useState('')
+    const [confirmActive, setConfirmActive] = useState(false)
+    const navigate = useNavigate()
+
+    useEffect(() => {
+        if (!userData) return
+        setUsername(userData.attributes.preferred_username)
+        setEmail(userData.attributes.email)
+    }, [userData])
 
     useEffect(() => {
         setError('')
-    }, [username, email, password])
+    }, [username, email])
 
     const handleEditClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()
         if (editActive) {
             setError('')
-            setEditActive(false)
-        
+            setEditActive(false)        
         } else {
             setEditActive(true)
         }
@@ -32,19 +39,33 @@ const Profile = () => {
 
     const handleFormSubmit = async (e: React.FormEvent) => {
         e.preventDefault()
-        if (!username || !email || !password) {
-            setError('Please fill out all fields')
+        if (!username ) {
+            setError('Please fill out username')
             return
         }
         try {
-            const userData = await API.User.update(username, email, password)
-            setUsername(userData.username)
-            setEmail(userData.email)
-            setPassword(userData.password)
+            const user = await Auth.currentAuthenticatedUser()
+            const result = await Auth.updateUserAttributes(user, {
+                preferred_username: username
+            })
+            console.log('result', result)
             setEditActive(false)
             return
         } catch (error) {
             console.log(error)
+        }
+    }
+
+    const handleDeleteUser = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault()
+        try {
+            const result = await Auth.deleteUser()
+            if (result === 'SUCCESS') {
+                setUserLoggedIn(false)
+                navigate('/')
+            }
+        } catch (error) {
+            console.log('Error deleting user', error)
         }
     }
 
@@ -68,18 +89,27 @@ const Profile = () => {
                 </div>
                 <div className={`${className}_contentContainer`}>
                     <label className={`${className}_label`} htmlFor="email">Email</label>
-                    <input className={`${className}_input`} type="email" name="email" id="email" value={email} onChange={(e) => setEmail(e.target.value)} disabled={!editActive} />
-                </div>
-                <div className={`${className}_contentContainer`}>
-                    <label className={`${className}_label`} htmlFor="password">Password</label>
-                    <input className={`${className}_input`} type="password" name="password" id="password" value={password} onChange={(e) => setPassword(e.target.value)} disabled={!editActive} />
+                    <p className={`${className}_email`}>{email}</p>
                 </div>
                 {editActive && <div className={`${className}_buttonContainer`} >
                     <button className={`${className}_button`} type="submit" disabled={!editActive}>Save Profile</button>
                 </div>}
                 {error && <p className={`${className}_error`} >{error}</p>}
-            </form>
+            </form>            
             <UserMetrics />
+            <div className={`${className}_deleteContainer`}>
+                {confirmActive ?
+                <>
+                    <p className={`${className}_deleteText`}>Are you sure you want to delete your account?</p>
+                    <div className={`${className}_deleteOptions`}>
+                        <button className={`${className}_button ${className}_deleteButton`} onClick={handleDeleteUser}>Confirm Delete</button>
+                        <button className={`${className}_button ${className}_button`} onClick={() => setConfirmActive(false)}>Cancel</button>
+                    </div>
+                </>
+                :
+                    <button className={`${className}_button ${className}_deleteButton`} onClick={() => setConfirmActive(true)}>Delete Account</button>
+                }
+            </div>
         </div>
     )
 }

@@ -5,11 +5,13 @@ const GlobalContext = React.createContext<{
     setDarkMode: React.Dispatch<React.SetStateAction<boolean>>,
     userLoggedIn: boolean,
     setUserLoggedIn: React.Dispatch<React.SetStateAction<boolean>>,
+    userData: any
 }>({
     darkMode: true,
     setDarkMode: () => null,
     userLoggedIn: false,
     setUserLoggedIn: () => null,
+    userData: null
 })
 
 export default GlobalContext

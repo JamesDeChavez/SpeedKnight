@@ -4,15 +4,15 @@ import { gsap } from 'gsap'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
 import PostGameModal from '../../components/PostGameModal'
+import { API, Auth } from 'aws-amplify'
 import './styles.css'
-import API from '../../api'
 
 interface Props {
     root: React.MutableRefObject<null>
 }
 
 const Game: React.FC<Props> = ({ root }) => {
-    const { darkMode } = useContext(GlobalContext)
+    const { darkMode, userLoggedIn, userData  } = useContext(GlobalContext)
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
@@ -32,10 +32,27 @@ const Game: React.FC<Props> = ({ root }) => {
     useEffect(() => {
         if (timeRef.current > 0 || gameActive) return
         const submitScore = async () => {
-            try {
-                const userScores = await API.Score.postUserScore('testId', scoreRef.current)
-                console.log(userScores)
-                return
+            if (!userLoggedIn) return
+            console.log('userData', userData)
+            const apiName = 'SpeedKnightChallenge'
+            const path = '/score'
+            const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub
+    
+            const myInit: any = {
+                body: {
+                    userId: currentUserId,
+                    score: scoreRef.current
+                }, 
+                headers: {
+                    Accept: "*/*",
+                    "Content-Type": "application/json",
+                    Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+                } 
+            }
+            try {                
+                console.log('init', myInit)
+                const testPost = await API.post(apiName, path, myInit)
+                console.log('test', testPost)
             } catch (error) {
                 console.log(error)
             }
