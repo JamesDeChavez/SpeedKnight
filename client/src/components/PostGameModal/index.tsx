@@ -23,18 +23,6 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
     useEffect(() => {
         setUserBest(38)
         setUserAverage(31)
-        const fetchGlobalScores = async () => {
-            try {                
-                const data = await API.Score.getGlobalScores()
-                if (data) {
-                    setGlobalBest(data.global.best)
-                    setGlobalAverage(data.global.average)
-                }
-            } catch (error) {
-                console.log(error)
-            }
-        }
-        fetchGlobalScores()
     }, [])
 
     useEffect(() => {

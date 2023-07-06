@@ -45,7 +45,6 @@ const LoginForm = () => {
         }
         try {
             const user = await Auth.signIn(username, password)
-            console.log('userData', user)
             if (user) { 
                 setUserLoggedIn(true)
                 navigate('/')

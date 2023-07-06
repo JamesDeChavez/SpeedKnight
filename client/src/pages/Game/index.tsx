@@ -41,7 +41,7 @@ const Game: React.FC<Props> = ({ root }) => {
                 body: {
                     userId: currentUserId,
                     score: scoreRef.current,
-                    createdAt: new Date().toISOString()
+                    createdAt: new Date().getTime()
                 }, 
                 headers: {
                     Accept: "*/*",
@@ -49,8 +49,12 @@ const Game: React.FC<Props> = ({ root }) => {
                     Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
                 } 
             }
+
+            console.log(myInit)
+
             try {
-                await API.post(apiName, path, myInit)
+                const response = await API.post(apiName, path, myInit)
+                console.log('response', response)
             } catch (error) {
                 console.log(error)
             }

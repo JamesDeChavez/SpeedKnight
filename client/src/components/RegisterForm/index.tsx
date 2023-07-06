@@ -80,7 +80,6 @@ const RegisterForm = () => {
                 attributes: { email, preferred_username: username },
                 autoSignIn: { enabled: true }
             })
-            console.log('userData', user)
             if (user) {
                 navigate('/login')
             }

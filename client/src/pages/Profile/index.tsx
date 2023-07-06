@@ -48,7 +48,6 @@ const Profile = () => {
             const result = await Auth.updateUserAttributes(user, {
                 preferred_username: username
             })
-            console.log('result', result)
             setEditActive(false)
             return
         } catch (error) {

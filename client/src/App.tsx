@@ -57,10 +57,6 @@ function App() {
     return unsubscribe
   }, [])
 
-  useEffect(() => {
-    console.log('user data', userData)
-  }, [userData])
-
   const router = createBrowserRouter([
     { path: '/', element: <NavbarWrapper />, children: [
       { path: '/', element: <Game root={root} /> },
