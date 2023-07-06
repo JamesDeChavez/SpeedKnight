@@ -14,7 +14,7 @@ const LightModeToggle = () => {
     const className = 'LightModeToggle'
     return (
         <div className={classNames(className, darkMode && className + '_darkMode')}>
-            <input className={`${className}_input`} type="checkbox" id="toggle" onClick={handleClick} checked={darkMode} />
+            <input className={`${className}_input`} type="checkbox" id="toggle" onClick={handleClick} checked={darkMode} readOnly />
             <label className={`${className}_label`} htmlFor="toggle" ></label>
         </div>
     )

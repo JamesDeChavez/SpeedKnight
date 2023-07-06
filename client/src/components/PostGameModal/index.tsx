@@ -2,7 +2,6 @@ import React, { useContext, useEffect, useState, useRef } from 'react'
 import { NavLink } from 'react-router-dom'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
-import API from '../../api'
 import html2canvas from 'html2canvas'
 import './styles.css'
 
@@ -23,6 +22,8 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
     useEffect(() => {
         setUserBest(38)
         setUserAverage(31)
+        setGlobalBest(49)
+        setGlobalAverage(28)
     }, [])
 
     useEffect(() => {
