@@ -39,7 +39,16 @@
     opacity: 0.5;
 }
 
-.PostGameModal_title {
+.PostGameModal_canvasContainer {
+    display: grid;
+    gap: 1rem;
+    background-color: #FFFFFF;
+    border-radius: 5px;
+    padding: 0.5rem;
+}
+
+.PostGameModal_title,
+.PostGameModal_text {
     text-align: center;
 }
 
@@ -110,17 +119,42 @@
     text-decoration: underline;
 }
 
+.PostGameModal_clipboardModal {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    width: min-content;
+    height: min-content;
+    white-space: nowrap;
+    padding: 1rem;
+    background-color: #b58863;
+    border: solid 1px #00000030;
+    border-radius: 5px;
+}
+
+.PostGameModal_clipboardModalText {
+    color: #FFFFFF;
+}
+
 .PostGameModal_darkMode > .PostGameModal_container {
     background-color: #2c2c2c;
     border: solid 1px #FFFFFF30;
 }
 
+.PostGameModal_darkMode > div > .PostGameModal_canvasContainer{
+    background-color: #2c2c2c;
+}
+
+.PostGameModal_darkMode > div > .PostGameModal_shareContainer,
 .PostGameModal_darkMode > div > .PostGameModal_callToAction {
     border-color: #FFFFFF30;
 }
 
-.PostGameModal_darkMode > div > .PostGameModal_scoreContainer,
-.PostGameModal_darkMode > div > div > .PostGameModal_metric {
+.PostGameModal_darkMode > div > div > .PostGameModal_scoreContainer,
+.PostGameModal_darkMode > div > div > div > .PostGameModal_metric {
     border-color: #769656;
 }
 
@@ -129,9 +163,10 @@
 }
 
 .PostGameModal_darkMode > div > div > button,
-.PostGameModal_darkMode > div > h2,
+.PostGameModal_darkMode > div > div > h2,
 .PostGameModal_darkMode > div > div > p,
 .PostGameModal_darkMode > div > div > div > p,
+.PostGameModal_darkMode > div > div > div > div > p,
 .PostGameModal_darkMode > div > div > span {
     color: #FFFFFF;
 }

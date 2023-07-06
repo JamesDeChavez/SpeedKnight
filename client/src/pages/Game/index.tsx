@@ -33,7 +33,6 @@ const Game: React.FC<Props> = ({ root }) => {
         if (timeRef.current > 0 || gameActive) return
         const submitScore = async () => {
             if (!userLoggedIn) return
-            console.log('userData', userData)
             const apiName = 'SpeedKnightChallenge'
             const path = '/score'
             const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub
@@ -41,7 +40,8 @@ const Game: React.FC<Props> = ({ root }) => {
             const myInit: any = {
                 body: {
                     userId: currentUserId,
-                    score: scoreRef.current
+                    score: scoreRef.current,
+                    createdAt: new Date().toISOString()
                 }, 
                 headers: {
                     Accept: "*/*",
@@ -49,10 +49,8 @@ const Game: React.FC<Props> = ({ root }) => {
                     Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
                 } 
             }
-            try {                
-                console.log('init', myInit)
-                const testPost = await API.post(apiName, path, myInit)
-                console.log('test', testPost)
+            try {
+                await API.post(apiName, path, myInit)
             } catch (error) {
                 console.log(error)
             }

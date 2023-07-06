@@ -21,6 +21,10 @@ function App() {
   const root = useRef(null)
 
   useEffect(() => {
+    localStorage.getItem('darkMode') === 'true' && setDarkMode(true)
+  }, [])
+
+  useEffect(() => {
     const unsubscribe = Hub.listen("auth", ({ payload: { event, data } }) => {
       switch (event) {
         case "signIn":

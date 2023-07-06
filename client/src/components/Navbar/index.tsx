@@ -8,7 +8,7 @@ import { Auth } from 'aws-amplify'
 import './styles.css'
 
 const Navbar = () => {
-    const { darkMode, userLoggedIn, setUserLoggedIn } = useContext(GlobalContext)
+    const { darkMode, userLoggedIn } = useContext(GlobalContext)
     const [navVisible, setNavVisible] = useState(false)
     const lineOne = useRef(null)
     const lineTwo = useRef(null)
@@ -88,7 +88,6 @@ const Navbar = () => {
         }
         try {
             await Auth.signOut()
-            setUserLoggedIn(false)
             setNavVisible(false)
         } catch (error) {
             console.log(error)
