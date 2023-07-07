@@ -11,8 +11,10 @@ import AwsConfigAuth from './config/awsConfig'
 import { Amplify, Hub, Auth } from 'aws-amplify'
 import classNames from 'classnames'
 import './App.css'
+import { gsap } from 'gsap'
 
 Amplify.configure(AwsConfigAuth)
+gsap.config({ nullTargetWarn: false })
 
 function App() {
   const [userData, setUserData] = useState(null)
