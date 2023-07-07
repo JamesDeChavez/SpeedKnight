@@ -4,6 +4,7 @@ import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
 import html2canvas from 'html2canvas'
 import './styles.css'
+import Spinner from '../Spinner'
 
 interface Props {
     score: number,
@@ -13,10 +14,11 @@ interface Props {
     userScoresCount: number,
     globalBest: number,
     globalScoresTotal: number,
-    globalScoresCount: number
+    globalScoresCount: number, 
+    scoresSubmitted: boolean
 }
 
-const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, userScoresTotal, userScoresCount, globalBest, globalScoresTotal, globalScoresCount }) => {    
+const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, userScoresTotal, userScoresCount, globalBest, globalScoresTotal, globalScoresCount, scoresSubmitted }) => {    
     const { darkMode, userLoggedIn } = useContext(GlobalContext)
     const [clipBoardModalVisible, setClipBoardModalVisible] = useState(false)
     const canvasRef = useRef(null)
@@ -60,19 +62,35 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                     </div>
                     <div className={`${className}_metricsContainer`}>
                         <div className={`${className}_metric`}>
-                            <p className={`${className}_metricNumber`}>{Math.floor(userScoresTotal / userScoresCount)}</p>
+                            {scoresSubmitted ?
+                                <Spinner />
+                            :
+                                <p className={`${className}_metricNumber`}>{Math.floor(userScoresTotal / userScoresCount)}</p>
+                            }
                             <p className={`${className}_metricText`}>Your Average</p>
                         </div>
                         <div className={`${className}_metric`}>
-                            <p className={`${className}_metricNumber`}>{userBest}</p>
+                            {scoresSubmitted ?
+                                <Spinner />
+                            :
+                                <p className={`${className}_metricNumber`}>{userBest}</p>
+                            }
                             <p className={`${className}_metricText`}>Your Best</p>
                         </div>
                         <div className={`${className}_metric`}>
-                            <p className={`${className}_metricNumber`}>{Math.floor(globalScoresTotal / globalScoresCount)}</p>
+                            {scoresSubmitted ?
+                                <Spinner />
+                            :
+                                <p className={`${className}_metricNumber`}>{Math.floor(globalScoresTotal / globalScoresCount)}</p>
+                            }
                             <p className={`${className}_metricText`}>Global Average</p>
                         </div>
                         <div className={`${className}_metric`}>
-                            <p className={`${className}_metricNumber`}>{globalBest}</p>
+                            {scoresSubmitted ?
+                                <Spinner />
+                            :
+                                <p className={`${className}_metricNumber`}>{globalBest}</p>
+                            }
                             <p className={`${className}_metricText`}>Global Best</p>
                         </div>
                     </div>

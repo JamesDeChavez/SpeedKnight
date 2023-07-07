@@ -23,7 +23,7 @@ const Game: React.FC<Props> = ({ root }) => {
     const [globalScoresTotal, setGlobalScoresTotal] = useState(0)
     const [globalScoresCount, setGlobalScoresCount] = useState(1)
     const [scoreSubmitted, setScoreSubmitted] = useState(false)
-    const [modalVisible, setModalVisible] = useState(false)
+    const [modalVisible, setModalVisible] = useState(true)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
     const scoreRef = useRef<number>(score)
@@ -187,7 +187,7 @@ const Game: React.FC<Props> = ({ root }) => {
                     {gameActive ? 'Quit Game' : 'Start Game'}
                 </button>
             </div>
-            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} userBest={userBest} userScoresTotal={userScoresTotal} userScoresCount={userScoresCount} globalBest={globalBest} globalScoresTotal={globalScoresTotal} globalScoresCount={globalScoresCount} />}  
+            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} userBest={userBest} userScoresTotal={userScoresTotal} userScoresCount={userScoresCount} globalBest={globalBest} globalScoresTotal={globalScoresTotal} globalScoresCount={globalScoresCount} scoresSubmitted={scoreSubmitted} />}  
         </div>
     )
 }
