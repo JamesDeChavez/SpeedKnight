@@ -4,6 +4,7 @@ import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
 import html2canvas from 'html2canvas'
 import './styles.css'
+import { API, Auth } from 'aws-amplify'
 
 interface Props {
     score: number,
@@ -22,8 +23,25 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
     useEffect(() => {
         setUserBest(38)
         setUserAverage(31)
-        setGlobalBest(49)
-        setGlobalAverage(28)
+        const getGlobalMetrics = async () => {
+            const apiName = 'SpeedKnightChallenge'
+            const path = '/score/global'
+            const myInit: any = {
+                headers: {
+                    Accept: "*/*",
+                    "Content-Type": "application/json",
+                    Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+                }
+            }
+            try {
+                const response = await API.get(apiName, path, myInit)
+                setGlobalBest(response.scoreMax)
+                setGlobalAverage(response.scoresTotal / response.scoresCount)
+            } catch (error) {
+                console.log('error', error)
+            }
+        }
+        getGlobalMetrics()
     }, [])
 
     useEffect(() => {

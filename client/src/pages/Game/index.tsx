@@ -35,8 +35,7 @@ const Game: React.FC<Props> = ({ root }) => {
             if (!userLoggedIn) return
             const apiName = 'SpeedKnightChallenge'
             const path = '/score'
-            const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub
-    
+            const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub    
             const myInit: any = {
                 body: {
                     userId: currentUserId,
@@ -49,12 +48,8 @@ const Game: React.FC<Props> = ({ root }) => {
                     Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
                 } 
             }
-
-            console.log(myInit)
-
             try {
-                const response = await API.post(apiName, path, myInit)
-                console.log('response', response)
+                await API.post(apiName, path, myInit)
             } catch (error) {
                 console.log(error)
             }
