@@ -22,6 +22,7 @@ const Game: React.FC<Props> = ({ root }) => {
     const [globalBest, setGlobalBest] = useState(0)
     const [globalScoresTotal, setGlobalScoresTotal] = useState(0)
     const [globalScoresCount, setGlobalScoresCount] = useState(1)
+    const [scoreSubmitted, setScoreSubmitted] = useState(false)
     const [modalVisible, setModalVisible] = useState(false)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
@@ -36,7 +37,7 @@ const Game: React.FC<Props> = ({ root }) => {
     }, [score])
 
     useEffect(() => {
-        if (!modalVisible) return
+        if (!scoreSubmitted) return
         const getUserMetrics = async () => {
             if (!userData) {
                 setUserBest(Number(sessionStorage.getItem('bestScore')) || 0)
@@ -87,7 +88,9 @@ const Game: React.FC<Props> = ({ root }) => {
         }
         getUserMetrics()
         getGlobalMetrics()
-    }, [modalVisible])
+        setModalVisible(true)
+        setScoreSubmitted(false)
+    }, [scoreSubmitted])
 
     useEffect(() => {
         if (timeRef.current > 0 || gameActive) return
@@ -130,7 +133,7 @@ const Game: React.FC<Props> = ({ root }) => {
             }
             try {
                 await API.post(apiName, path, myInit)
-                setModalVisible(true)
+                setScoreSubmitted(true)
             } catch (error) {
                 console.log(error)
             }
