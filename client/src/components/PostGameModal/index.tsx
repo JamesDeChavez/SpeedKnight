@@ -4,45 +4,22 @@ import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
 import html2canvas from 'html2canvas'
 import './styles.css'
-import { API, Auth } from 'aws-amplify'
 
 interface Props {
     score: number,
-    setModalVisible: React.Dispatch<React.SetStateAction<boolean>>
+    setModalVisible: React.Dispatch<React.SetStateAction<boolean>>,
+    userBest: number,
+    userScoresTotal: number,
+    userScoresCount: number,
+    globalBest: number,
+    globalScoresTotal: number,
+    globalScoresCount: number
 }
 
-const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {    
+const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, userScoresTotal, userScoresCount, globalBest, globalScoresTotal, globalScoresCount }) => {    
     const { darkMode, userLoggedIn } = useContext(GlobalContext)
-    const [userBest, setUserBest] = useState<number | string>('N/A')
-    const [userAverage, setUserAverage] = useState<number | string>('N/A')
-    const [globalBest, setGlobalBest] = useState<number | string>('-')
-    const [globalAverage, setGlobalAverage] = useState<number | string>('-')
     const [clipBoardModalVisible, setClipBoardModalVisible] = useState(false)
     const canvasRef = useRef(null)
-
-    useEffect(() => {
-        setUserBest(38)
-        setUserAverage(31)
-        const getGlobalMetrics = async () => {
-            const apiName = 'SpeedKnightChallenge'
-            const path = '/score/global'
-            const myInit: any = {
-                headers: {
-                    Accept: "*/*",
-                    "Content-Type": "application/json",
-                    Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
-                }
-            }
-            try {
-                const response = await API.get(apiName, path, myInit)
-                setGlobalBest(response.scoreMax)
-                setGlobalAverage(response.scoresTotal / response.scoresCount)
-            } catch (error) {
-                console.log('error', error)
-            }
-        }
-        getGlobalMetrics()
-    }, [])
 
     useEffect(() => {
         if (!clipBoardModalVisible) return
@@ -83,20 +60,20 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
                     </div>
                     <div className={`${className}_metricsContainer`}>
                         <div className={`${className}_metric`}>
+                            <p className={`${className}_metricNumber`}>{Math.floor(userScoresTotal / userScoresCount)}</p>
+                            <p className={`${className}_metricText`}>Your Average</p>
+                        </div>
+                        <div className={`${className}_metric`}>
                             <p className={`${className}_metricNumber`}>{userBest}</p>
                             <p className={`${className}_metricText`}>Your Best</p>
                         </div>
                         <div className={`${className}_metric`}>
-                            <p className={`${className}_metricNumber`}>{userAverage}</p>
-                            <p className={`${className}_metricText`}>Your Average</p>
+                            <p className={`${className}_metricNumber`}>{Math.floor(globalScoresTotal / globalScoresCount)}</p>
+                            <p className={`${className}_metricText`}>Global Average</p>
                         </div>
                         <div className={`${className}_metric`}>
                             <p className={`${className}_metricNumber`}>{globalBest}</p>
                             <p className={`${className}_metricText`}>Global Best</p>
-                        </div>
-                        <div className={`${className}_metric`}>
-                            <p className={`${className}_metricNumber`}>{globalAverage}</p>
-                            <p className={`${className}_metricText`}>Global Average</p>
                         </div>
                     </div>
                 </div>
@@ -111,7 +88,7 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible }) => {
                     <NavLink to={'/register'} className={`${className}_callToActionLink`} onClick={() => setModalVisible(false)}>
                         create an account
                     </NavLink>
-                    <span> to track your stats</span>
+                    <span> to track your stats and submit you scores</span>
                 </div>
                 {clipBoardModalVisible && <div className={`${className}_clipboardModal`}>
                     <p className={`${className}_clipboardModalText`}>Results copied to clipboard</p>

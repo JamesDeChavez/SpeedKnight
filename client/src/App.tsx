@@ -53,6 +53,9 @@ function App() {
         setUserData(currentUser)
         setUserLoggedIn(true)
       })
+      .catch(() => {
+        return
+      })
 
     return unsubscribe
   }, [])

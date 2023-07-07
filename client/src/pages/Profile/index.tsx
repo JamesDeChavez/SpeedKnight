@@ -14,7 +14,7 @@ const Profile = () => {
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [error, setError] = useState('')
-    const [confirmActive, setConfirmActive] = useState(false)
+    const [confirmActive, setConfirmActive] = useState(false) 
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -45,7 +45,7 @@ const Profile = () => {
         }
         try {
             const user = await Auth.currentAuthenticatedUser()
-            const result = await Auth.updateUserAttributes(user, {
+            await Auth.updateUserAttributes(user, {
                 preferred_username: username
             })
             setEditActive(false)

@@ -16,7 +16,13 @@ const Game: React.FC<Props> = ({ root }) => {
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
-    const [modalVisible, setModalVisible] = useState(true)
+    const [userBest, setUserBest] = useState(0)
+    const [userScoresTotal, setUserScoresTotal] = useState(0)
+    const [userScoresCount, setUserScoresCount] = useState(1)
+    const [globalBest, setGlobalBest] = useState(0)
+    const [globalScoresTotal, setGlobalScoresTotal] = useState(0)
+    const [globalScoresCount, setGlobalScoresCount] = useState(1)
+    const [modalVisible, setModalVisible] = useState(false)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
     const scoreRef = useRef<number>(score)
@@ -30,12 +36,87 @@ const Game: React.FC<Props> = ({ root }) => {
     }, [score])
 
     useEffect(() => {
+        if (!modalVisible) return
+        const getUserMetrics = async () => {
+            if (!userData) {
+                setUserBest(Number(sessionStorage.getItem('bestScore')) || 0)
+                setUserScoresTotal(Number(sessionStorage.getItem('scoresTotal')) || 0)
+                setUserScoresCount(Number(sessionStorage.getItem('scoresCount')) || 1)
+                return
+            }
+            const apiName = 'SpeedKnightChallenge'
+            const path = '/score/user'            
+            const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub
+            const myInit: any = {
+                queryStringParameters: {
+                    userId: currentUserId
+                },
+                headers: {
+                    Accept: "*/*",
+                    "Content-Type": "application/json",
+                    Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+                }
+            }
+            try {
+                const response = await API.get(apiName, path, myInit)
+                setUserBest(response.scoreMax)
+                setUserScoresTotal(response.scoresTotal)
+                setUserScoresCount(response.scoresCount > 0 ? response.scoresCount : 1)
+            } catch (error) {
+                console.log('error', error)
+            }
+        }
+        
+        const getGlobalMetrics = async () => {
+            const apiName = 'SpeedKnightChallenge'
+            const path = '/score/global'
+            const myInit: any = {
+                headers: {
+                    Accept: "*/*",
+                    "Content-Type": "application/json"
+                }
+            }
+            try {
+                const response = await API.get(apiName, path, myInit)
+                setGlobalBest(response.scoreMax)
+                setGlobalScoresTotal(response.scoresTotal)
+                setGlobalScoresCount(response.scoresCount)
+            } catch (error) {
+                console.log('error', error)
+            }
+        }
+        getUserMetrics()
+        getGlobalMetrics()
+    }, [modalVisible])
+
+    useEffect(() => {
         if (timeRef.current > 0 || gameActive) return
         const submitScore = async () => {
-            if (!userLoggedIn) return
+            if (!userLoggedIn) {
+                sessionStorage.setItem(
+                    'scoresTotal', 
+                    sessionStorage.getItem('scoresTotal') 
+                        ? `${Number(sessionStorage.getItem('scoresTotal')) + scoreRef.current}` 
+                        : `${scoreRef.current}`)
+                sessionStorage.setItem(
+                    'scoresCount', 
+                    sessionStorage.getItem('scoresCount') 
+                        ? `${Number(sessionStorage.getItem('scoresCount')) + 1}` 
+                        : '1')
+                sessionStorage.setItem(
+                    'bestScore',
+                    sessionStorage.getItem('bestScore')
+                        ? `${Math.max(Number(sessionStorage.getItem('bestScore')), scoreRef.current)}`
+                        : `${scoreRef.current}`)
+            }
+            
             const apiName = 'SpeedKnightChallenge'
             const path = '/score'
-            const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub    
+            const currentUserId = userData 
+                ? userData.attributes 
+                    ? userData.attributes.sub 
+                    : userData.signInUserSession.idToken.payload.sub
+                : 'AnonymousUser' 
             const myInit: any = {
                 body: {
                     userId: currentUserId,
@@ -44,12 +125,12 @@ const Game: React.FC<Props> = ({ root }) => {
                 }, 
                 headers: {
                     Accept: "*/*",
-                    "Content-Type": "application/json",
-                    Authorization: `${(await Auth.currentSession()).getIdToken().getJwtToken()}`
+                    "Content-Type": "application/json"
                 } 
             }
             try {
                 await API.post(apiName, path, myInit)
+                setModalVisible(true)
             } catch (error) {
                 console.log(error)
             }
@@ -83,7 +164,6 @@ const Game: React.FC<Props> = ({ root }) => {
             if (timeRef.current <= 0) {
                 clearInterval(intervalRef.current)
                 setGameActive(false)
-                setModalVisible(true)
                 return
             }
             setTime(time => time - 1)
@@ -104,7 +184,7 @@ const Game: React.FC<Props> = ({ root }) => {
                     {gameActive ? 'Quit Game' : 'Start Game'}
                 </button>
             </div>
-            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} />}  
+            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} userBest={userBest} userScoresTotal={userScoresTotal} userScoresCount={userScoresCount} globalBest={globalBest} globalScoresTotal={globalScoresTotal} globalScoresCount={globalScoresCount} />}  
         </div>
     )
 }
