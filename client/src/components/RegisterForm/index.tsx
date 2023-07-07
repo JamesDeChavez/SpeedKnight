@@ -10,7 +10,7 @@ import InfoSVG from '../InfoSVG'
 import './styles.css'
 
 const RegisterForm = () => {
-    const { darkMode, setUserLoggedIn } = useContext(GlobalContext)
+    const { darkMode } = useContext(GlobalContext)
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
