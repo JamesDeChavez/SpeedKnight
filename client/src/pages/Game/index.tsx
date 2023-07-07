@@ -22,7 +22,7 @@ const Game: React.FC<Props> = ({ root }) => {
     const [globalBest, setGlobalBest] = useState(0)
     const [globalScoresTotal, setGlobalScoresTotal] = useState(0)
     const [globalScoresCount, setGlobalScoresCount] = useState(1)
-    const [scoreSubmitted, setScoreSubmitted] = useState(false)
+    const [spinnersVisible, setSpinnersVisible] = useState({ user: false, global: false })
     const [modalVisible, setModalVisible] = useState(false)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
@@ -37,14 +37,16 @@ const Game: React.FC<Props> = ({ root }) => {
     }, [score])
 
     useEffect(() => {
-        if (!scoreSubmitted) return
+        if (!modalVisible) return
+        setSpinnersVisible({ user: true, global: true })
         const getUserMetrics = async () => {
             if (!userData) {
                 setUserBest(Number(sessionStorage.getItem('bestScore')) || 0)
                 setUserScoresTotal(Number(sessionStorage.getItem('scoresTotal')) || 0)
                 setUserScoresCount(Number(sessionStorage.getItem('scoresCount')) || 1)
+                setSpinnersVisible(prevState => ({ ...prevState, user: false }))
                 return
-            }
+            }            
             const apiName = 'SpeedKnightChallenge'
             const path = '/score/user'            
             const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub
@@ -63,6 +65,7 @@ const Game: React.FC<Props> = ({ root }) => {
                 setUserBest(response.scoreMax)
                 setUserScoresTotal(response.scoresTotal)
                 setUserScoresCount(response.scoresCount > 0 ? response.scoresCount : 1)
+                setSpinnersVisible(prevState => ({ ...prevState, user: false }))
             } catch (error) {
                 console.log('error', error)
             }
@@ -82,15 +85,14 @@ const Game: React.FC<Props> = ({ root }) => {
                 setGlobalBest(response.scoreMax)
                 setGlobalScoresTotal(response.scoresTotal)
                 setGlobalScoresCount(response.scoresCount)
+                setSpinnersVisible(prevState => ({ ...prevState, global: false }))
             } catch (error) {
                 console.log('error', error)
             }
         }
         getUserMetrics()
         getGlobalMetrics()
-        setModalVisible(true)
-        setScoreSubmitted(false)
-    }, [scoreSubmitted])
+    }, [modalVisible])
 
     useEffect(() => {
         if (timeRef.current > 0 || gameActive) return
@@ -133,7 +135,7 @@ const Game: React.FC<Props> = ({ root }) => {
             }
             try {
                 await API.post(apiName, path, myInit)
-                setScoreSubmitted(true)
+                setModalVisible(true)
             } catch (error) {
                 console.log(error)
             }
@@ -187,7 +189,7 @@ const Game: React.FC<Props> = ({ root }) => {
                     {gameActive ? 'Quit Game' : 'Start Game'}
                 </button>
             </div>
-            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} userBest={userBest} userScoresTotal={userScoresTotal} userScoresCount={userScoresCount} globalBest={globalBest} globalScoresTotal={globalScoresTotal} globalScoresCount={globalScoresCount} scoresSubmitted={scoreSubmitted} />}  
+            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} userBest={userBest} userScoresTotal={userScoresTotal} userScoresCount={userScoresCount} globalBest={globalBest} globalScoresTotal={globalScoresTotal} globalScoresCount={globalScoresCount} spinnersVisible={spinnersVisible} />}  
         </div>
     )
 }

@@ -14,11 +14,11 @@ interface Props {
     userScoresCount: number,
     globalBest: number,
     globalScoresTotal: number,
-    globalScoresCount: number, 
-    scoresSubmitted: boolean
+    globalScoresCount: number,
+    spinnersVisible: { user: boolean, global: boolean }
 }
 
-const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, userScoresTotal, userScoresCount, globalBest, globalScoresTotal, globalScoresCount, scoresSubmitted }) => {    
+const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, userScoresTotal, userScoresCount, globalBest, globalScoresTotal, globalScoresCount, spinnersVisible }) => {    
     const { darkMode, userLoggedIn } = useContext(GlobalContext)
     const [clipBoardModalVisible, setClipBoardModalVisible] = useState(false)
     const canvasRef = useRef(null)
@@ -62,7 +62,7 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                     </div>
                     <div className={`${className}_metricsContainer`}>
                         <div className={`${className}_metric`}>
-                            {scoresSubmitted ?
+                            {spinnersVisible.user || spinnersVisible.global ?
                                 <Spinner />
                             :
                                 <p className={`${className}_metricNumber`}>{Math.floor(userScoresTotal / userScoresCount)}</p>
@@ -70,7 +70,7 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                             <p className={`${className}_metricText`}>Your Average</p>
                         </div>
                         <div className={`${className}_metric`}>
-                            {scoresSubmitted ?
+                            {spinnersVisible.user || spinnersVisible.global ?
                                 <Spinner />
                             :
                                 <p className={`${className}_metricNumber`}>{userBest}</p>
@@ -78,7 +78,7 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                             <p className={`${className}_metricText`}>Your Best</p>
                         </div>
                         <div className={`${className}_metric`}>
-                            {scoresSubmitted ?
+                            {spinnersVisible.user || spinnersVisible.global ?
                                 <Spinner />
                             :
                                 <p className={`${className}_metricNumber`}>{Math.floor(globalScoresTotal / globalScoresCount)}</p>
@@ -86,7 +86,7 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                             <p className={`${className}_metricText`}>Global Average</p>
                         </div>
                         <div className={`${className}_metric`}>
-                            {scoresSubmitted ?
+                            {spinnersVisible.user || spinnersVisible.global ?
                                 <Spinner />
                             :
                                 <p className={`${className}_metricNumber`}>{globalBest}</p>
