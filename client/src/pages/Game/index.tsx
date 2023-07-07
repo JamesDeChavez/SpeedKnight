@@ -24,6 +24,7 @@ const Game: React.FC<Props> = ({ root }) => {
     const [globalScoresCount, setGlobalScoresCount] = useState(1)
     const [spinnersVisible, setSpinnersVisible] = useState({ user: false, global: false })
     const [modalVisible, setModalVisible] = useState(false)
+    const [submitScoreData, setSubmitScoreData] = useState(null)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
     const scoreRef = useRef<number>(score)
@@ -37,7 +38,7 @@ const Game: React.FC<Props> = ({ root }) => {
     }, [score])
 
     useEffect(() => {
-        if (!modalVisible) return
+        if (!submitScoreData) return
         setSpinnersVisible({ user: true, global: true })
         const getUserMetrics = async () => {
             if (!userData) {
@@ -92,7 +93,8 @@ const Game: React.FC<Props> = ({ root }) => {
         }
         getUserMetrics()
         getGlobalMetrics()
-    }, [modalVisible])
+        setSubmitScoreData(null)
+    }, [submitScoreData])
 
     useEffect(() => {
         if (timeRef.current > 0 || gameActive) return
@@ -134,8 +136,8 @@ const Game: React.FC<Props> = ({ root }) => {
                 } 
             }
             try {
-                await API.post(apiName, path, myInit)
-                setModalVisible(true)
+                const response = await API.post(apiName, path, myInit)
+                setSubmitScoreData(response)
             } catch (error) {
                 console.log(error)
             }
@@ -169,6 +171,7 @@ const Game: React.FC<Props> = ({ root }) => {
             if (timeRef.current <= 0) {
                 clearInterval(intervalRef.current)
                 setGameActive(false)
+                setModalVisible(true)
                 return
             }
             setTime(time => time - 1)
