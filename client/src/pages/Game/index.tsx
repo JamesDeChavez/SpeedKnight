@@ -39,7 +39,6 @@ const Game: React.FC<Props> = ({ root }) => {
 
     useEffect(() => {
         if (!submitScoreData) return
-        setSpinnersVisible({ user: true, global: true })
         const getUserMetrics = async () => {
             if (!userData) {
                 setUserBest(Number(sessionStorage.getItem('bestScore')) || 0)
@@ -172,6 +171,7 @@ const Game: React.FC<Props> = ({ root }) => {
                 clearInterval(intervalRef.current)
                 setGameActive(false)
                 setModalVisible(true)
+                setSpinnersVisible({ user: true, global: true })
                 return
             }
             setTime(time => time - 1)
