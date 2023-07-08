@@ -68,6 +68,7 @@ const Game: React.FC<Props> = ({ root }) => {
                 setSpinnersVisible(prevState => ({ ...prevState, user: false }))
             } catch (error) {
                 console.log('error', error)
+                setSpinnersVisible(prevState => ({ ...prevState, user: false }))
             }
         }
         
@@ -88,6 +89,7 @@ const Game: React.FC<Props> = ({ root }) => {
                 setSpinnersVisible(prevState => ({ ...prevState, global: false }))
             } catch (error) {
                 console.log('error', error)
+                setSpinnersVisible(prevState => ({ ...prevState, global: false }))
             }
         }
         getUserMetrics()
