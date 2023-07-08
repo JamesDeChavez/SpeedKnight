@@ -9,7 +9,7 @@ import { useNavigate } from 'react-router-dom'
 import './styles.css'
 
 const Profile = () => {
-    const { darkMode, userData, setUserLoggedIn } = useContext(GlobalContext)
+    const { darkMode, userData, userLoggedIn, setUserLoggedIn } = useContext(GlobalContext)
     const [editActive, setEditActive] = useState(false)
     const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
@@ -18,10 +18,10 @@ const Profile = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!userData) return
+        if (!userLoggedIn) navigate('/')
         setUsername(userData.attributes.preferred_username)
         setEmail(userData.attributes.email)
-    }, [userData])
+    }, [userData, userLoggedIn])
 
     useEffect(() => {
         setError('')
