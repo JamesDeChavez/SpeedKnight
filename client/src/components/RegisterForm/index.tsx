@@ -81,7 +81,7 @@ const RegisterForm = () => {
                 autoSignIn: { enabled: true }
             })
             if (user) {
-                navigate('/login')
+                navigate('/verify')
             }
         } catch (error) {
             setError("Something went wrong")
@@ -97,7 +97,7 @@ const RegisterForm = () => {
             <h2 className={`${className}_title`}>Create Account</h2>
             <div className={`${className}_inputContainer`}>
                 <label className={`${className}_label`} htmlFor="username">Username</label>
-                <input className={`${className}_input`} type="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <input className={`${className}_input`} type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div className={`${className}_inputContainer`}>
                 <label className={`${className}_label`} htmlFor="email">Email</label>

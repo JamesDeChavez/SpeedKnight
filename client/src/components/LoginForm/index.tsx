@@ -50,10 +50,13 @@ const LoginForm = () => {
                 navigate('/')
             }
         } catch (error: any) {
-            setError(error.toString().includes('UserNotConfirmedException') 
-                ? "Please confirm your email address before loggin in" 
-                : "Something went wrong" )
-            console.log(error)
+            if(error.toString().includes('UserNotConfirmedException')) {
+                navigate('/verify')
+                return
+            } else {
+                setError("Something went wrong")
+                console.log(error)
+            }
         }
     }
 
@@ -63,7 +66,7 @@ const LoginForm = () => {
             <h2 className={`${className}_title`}>Log in</h2>
             <div className={`${className}_inputContainer`}>
                 <label className={`${className}_label`} htmlFor="username">Username</label>
-                <input className={`${className}_input`} type="username" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
+                <input className={`${className}_input`} type="text" id="username" value={username} onChange={(e) => setUsername(e.target.value)} />
             </div>
             <div className={`${className}_inputContainer`}>
                 <label className={`${className}_label`} htmlFor="password">Password</label>

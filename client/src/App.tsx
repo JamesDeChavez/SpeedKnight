@@ -12,6 +12,7 @@ import { Amplify, Hub, Auth } from 'aws-amplify'
 import classNames from 'classnames'
 import './App.css'
 import { gsap } from 'gsap'
+import Verify from './pages/Verify'
 
 Amplify.configure(AwsConfigAuth)
 gsap.config({ nullTargetWarn: false })
@@ -35,7 +36,6 @@ function App() {
           break
         case "signUp":
           setUserData(data)
-          setUserLoggedIn(true)
           break
         case "signOut":
           setUserData(null)
@@ -69,6 +69,7 @@ function App() {
       { path: '/register', element: <Register /> },
       { path: '/instructions', element: <Instructions /> },
       { path: '/profile', element: <Profile /> },
+      { path: '/verify', element: <Verify /> }
     ] }    
   ])
 
