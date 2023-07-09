@@ -106,7 +106,7 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                     <NavLink to={'/register'} className={`${className}_callToActionLink`} onClick={() => setModalVisible(false)}>
                         create an account
                     </NavLink>
-                    <span> to track your stats and submit you scores</span>
+                    <span> to track your stats</span>
                 </div>
                 {clipBoardModalVisible && <div className={`${className}_clipboardModal`}>
                     <p className={`${className}_clipboardModalText`}>Results copied to clipboard</p>
