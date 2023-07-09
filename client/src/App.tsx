@@ -53,7 +53,6 @@ function App() {
     Auth.currentAuthenticatedUser()
       .then(currentUser => {
         setUserData(currentUser)
-        setUserLoggedIn(true)
       })
       .catch(() => {
         return
