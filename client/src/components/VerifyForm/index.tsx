@@ -32,7 +32,7 @@ const VerifyForm = () => {
             return
         }
         const response = await Auth.confirmSignUp(username, verify)
-        if (response) navigate('/login')
+        if (response) navigate('/')
     }
 
     const className = 'VerifyForm'
