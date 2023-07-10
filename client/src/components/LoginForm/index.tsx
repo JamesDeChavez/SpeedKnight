@@ -74,6 +74,7 @@ const LoginForm = () => {
             </div>
             <div className={`${className}_buttonContainer`}>
                 <input className={`${className}_submitButton`} type="submit" value="Log in" />
+                <button className={`${className}_forgotButton`} onClick={() => navigate('/forgotPassword')} >Forgot Password?</button>
             </div>
             {error && <p className={`${className}_error`}>{error}</p>}
             <div className={`${className}_seperatorContainer`}>

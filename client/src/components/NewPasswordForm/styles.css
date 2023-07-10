@@ -1,0 +1,65 @@
+.NewPasswordForm {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 90%;
+    max-width: 500px;
+    justify-self: center;
+    padding-top: 0.5rem;
+}
+
+.NewPasswordForm_inputContainer {
+    display: grid;
+    gap: 0.2rem;
+}
+
+.NewPasswordForm_label {
+    font-weight: bold;
+}
+
+.NewPasswordForm_input {
+    padding: 0.5rem;
+    border: solid 1px #00000080;
+    border-radius: 5px;
+}
+
+.NewPasswordForm_submitButton {
+    width: 100%;
+    padding: 0.5rem;
+    border: solid 1px #FFFFFF30;
+    border-radius: 5px;
+    background-color: #b58863;
+    color: #FFFFFF;
+    font-size: 1rem;
+}
+
+.NewPasswordForm_submitButton:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.NewPasswordForm_error {
+    color: red !important;
+}
+
+.NewPasswordForm_darkMode > h2,
+.NewPasswordForm_darkMode > div > label,
+.NewPasswordForm_darkMode > p {
+    color: #FFFFFF
+}
+
+.NewPasswordForm_darkMode > div > input {
+    background-color: #3c3a38;
+    border: solid 1px #FFFFFF30;
+    color: #FFFFFF;
+}
+
+.NewPasswordForm_darkMode > div > .NewPasswordForm_submitButton {
+    background-color: #769656;
+}
+
+@media screen and (min-height: 700px) {
+    .NewPasswordForm {
+        padding-top: 2rem;
+    }
+}

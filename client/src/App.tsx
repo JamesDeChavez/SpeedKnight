@@ -13,6 +13,8 @@ import classNames from 'classnames'
 import './App.css'
 import { gsap } from 'gsap'
 import Verify from './pages/Verify'
+import Forgot from './pages/Forgot'
+import NewPassword from './pages/NewPassword'
 
 Amplify.configure(AwsConfigAuth)
 gsap.config({ nullTargetWarn: false })
@@ -68,7 +70,9 @@ function App() {
       { path: '/register', element: <Register /> },
       { path: '/instructions', element: <Instructions /> },
       { path: '/profile', element: <Profile /> },
-      { path: '/verify', element: <Verify /> }
+      { path: '/verify', element: <Verify /> },
+      { path: '/forgotPassword', element: <Forgot />},
+      { path: '/newPassword', element: <NewPassword /> }
     ] }    
   ])
 

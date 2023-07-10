@@ -23,6 +23,11 @@
     border-radius: 5px;
 }
 
+.LoginForm_buttonContainer {
+    display: grid;
+    gap: 0.5rem;
+}
+
 .LoginForm_submitButton {
     width: 100%;
     padding: 0.5rem;
@@ -36,6 +41,17 @@
 .LoginForm_submitButton:hover {
     cursor: pointer;
     font-weight: bold;
+}
+
+.LoginForm_forgotButton {
+    color: blue;
+    display: flex;
+    padding: 0;
+}
+
+.LoginForm_forgotButton:hover {
+    cursor: pointer;
+    text-decoration: underline;
 }
 
 .LoginForm_error {
@@ -113,6 +129,10 @@
 
 .LoginForm_darkMode > div > .LoginForm_submitButton {
     background-color: #769656;
+}
+
+.LoginForm_darkMode > div > .LoginForm_forgotButton {
+    color: aqua;
 }
 
 .LoginForm_oauthContainer_darkMode > .LoginForm_oauthButton {
