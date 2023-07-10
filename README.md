@@ -1,4 +1,4 @@
-# Speed Knight Challenge (Still In Development)
+# Speed Knight Challenge
 
 ## Introduction
 Speed Knight Challenge is an online browser game to help players improve their understanding of the knight piece in chess. You have 60 seconds to capture as many pawns as possible, only using one knight. Highly efficient knight movement will be rewarded with high scores in this game, which you can then share with friends on social media with one-click.
