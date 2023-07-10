@@ -23,7 +23,6 @@ const ForgotForm = () => {
         }
         try {
             const response = await Auth.forgotPassword(username)
-            console.log('response', response)
             if (response) {
                 navigate('/newPassword')
             }

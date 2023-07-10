@@ -2,8 +2,8 @@ import { useState, useEffect, useLayoutEffect } from 'react'
 import { BoardSpace } from '../../utils/interfaces'
 import { createBoard, createEmptyBoard } from '../../game/functions'
 import Space from '../Space'
-import './styles.css'
 import { gsap } from 'gsap'
+import './styles.css'
 
 interface Props {
     setScore: React.Dispatch<React.SetStateAction<number>>,

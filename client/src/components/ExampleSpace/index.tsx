@@ -16,8 +16,7 @@ const ExampleSpace: React.FC<Props> = ({ space }) => {
         <div className={className} style={{ 
             backgroundColor: darkMode && space.backgroundColor === '#b58863' 
                 ? '#769656' 
-                : space.backgroundColor,
-
+                : space.backgroundColor
         }}>
             {space.knightVisible && <KnightSVG />}
             {space.pawnVisible && <PawnSVG />}

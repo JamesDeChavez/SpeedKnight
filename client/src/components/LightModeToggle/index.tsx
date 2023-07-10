@@ -1,7 +1,7 @@
 import { useContext } from 'react'
-import './styles.css'
 import GlobalContext from '../../utils/GlobalContext'
 import classNames from 'classnames'
+import './styles.css'
 
 const LightModeToggle = () => {
     const { darkMode,setDarkMode } = useContext(GlobalContext)
