@@ -184,6 +184,9 @@ const Game: React.FC<Props> = ({ root }) => {
     const className = 'Game'
     return (
         <div className={classNames(className, darkMode && className + '_darkMode')}>
+            <div className={`${className}_instructionsContainer`}>
+                <p className={`${className}_instructions`}><strong>Game Rules: </strong>Capture as many pawns as you can in 60 seconds using only one knight piece.</p>
+            </div>
             <div className={`${className}_scoreTimeContainer`}>
                 <p className={`${className}_score`}>{`Score: ${score}`}</p>
                 <p className={`${className}_time`}>{`Time: ${time}`}</p>

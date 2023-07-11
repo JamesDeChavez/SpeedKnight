@@ -6,6 +6,15 @@
     gap: 1rem;
 }
 
+.Game_instructionsContainer {
+    padding: 0 0.5rem;
+    display: flex;
+    width: 100%;
+    max-width: 700px;
+    place-self: center;
+    
+}
+
 .Game_scoreTimeContainer {
     padding: 0 0.5rem;
     display: flex;
@@ -52,6 +61,7 @@
 }
 
 @media screen and (min-width: 700px) {
+    .Game_instructionsContainer,
     .Game_scoreTimeContainer {
         padding: 0;
     }
