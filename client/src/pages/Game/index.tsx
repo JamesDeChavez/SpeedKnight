@@ -129,7 +129,8 @@ const Game: React.FC<Props> = ({ root }) => {
                 body: {
                     userId: currentUserId,
                     score: scoreRef.current,
-                    createdAt: new Date().getTime()
+                    createdAt: new Date().getTime(),
+                    key: import.meta.env.VITE_SECRET
                 }, 
                 headers: {
                     Accept: "*/*",
