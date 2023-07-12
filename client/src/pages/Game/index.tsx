@@ -6,6 +6,7 @@ import classNames from 'classnames'
 import PostGameModal from '../../components/PostGameModal'
 import { API, Auth } from 'aws-amplify'
 import './styles.css'
+import key from '../../config/config'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -130,7 +131,7 @@ const Game: React.FC<Props> = ({ root }) => {
                     userId: currentUserId,
                     score: scoreRef.current,
                     createdAt: new Date().getTime(),
-                    key: import.meta.env.VITE_SECRET
+                    key: key
                 }, 
                 headers: {
                     Accept: "*/*",
