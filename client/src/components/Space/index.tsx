@@ -7,7 +7,7 @@ import placeAudio from '../../assets/piece-placement.mp3'
 import captureAudio from '../../assets/piece-capture.mp3'
 import GlobalContext from '../../utils/GlobalContext'
 import GameContext from '../../utils/GameContext'
-import classnames from 'classnames'
+import classNames from 'classnames'
 import './styles.css'
 
 interface Props {
@@ -66,7 +66,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
     const className = 'Space'
     return (
         <div 
-            className={classnames(className, {
+            className={classNames(className, {
                 [className + '_validMove']: space.validMove,
             })} 
             id={`Row_${row}-Col_${col}`} 

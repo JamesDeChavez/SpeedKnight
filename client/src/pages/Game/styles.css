@@ -68,6 +68,10 @@
     padding: 0.2rem 0.5rem;
 }
 
+.Game_optionButton:hover {
+    cursor: pointer;
+}
+
 .Game_buttonActive {
     background-color: #b58863;
     color: #FFFFFF;
