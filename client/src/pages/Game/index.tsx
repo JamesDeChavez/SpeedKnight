@@ -7,6 +7,7 @@ import PostGameModal from '../../components/PostGameModal'
 import { API, Auth } from 'aws-amplify'
 import './styles.css'
 import key from '../../config/config'
+import GameContext from '../../utils/GameContext'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -26,6 +27,9 @@ const Game: React.FC<Props> = ({ root }) => {
     const [spinnersVisible, setSpinnersVisible] = useState({ user: false, global: false })
     const [modalVisible, setModalVisible] = useState(false)
     const [submitScoreData, setSubmitScoreData] = useState(null)
+    const [optionsVisible, setOptionsVisible] = useState(false)
+    const [soundOn, setSoundOn] = useState(true)
+    const [markersOn, setMarkersOn] = useState(true)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
     const scoreRef = useRef<number>(score)
@@ -170,6 +174,7 @@ const Game: React.FC<Props> = ({ root }) => {
         setTime(60)
         setScore(0)
         setGameActive(true)
+        setOptionsVisible(false)
         intervalRef.current = setInterval(() => {
             if (timeRef.current <= 0) {
                 clearInterval(intervalRef.current)
@@ -185,22 +190,51 @@ const Game: React.FC<Props> = ({ root }) => {
 
     const className = 'Game'
     return (
-        <div className={classNames(className, darkMode && className + '_darkMode')}>
-            <div className={`${className}_instructionsContainer`}>
-                <p className={`${className}_instructions`}><strong>Game Rules: </strong>Capture as many pawns as you can in 60 seconds using only one knight piece.</p>
+        <GameContext.Provider value={{ soundOn, setOptionsVisible, markersOn }}>
+            <div className={classNames(className, darkMode && className + '_darkMode')}>
+                <div className={`${className}_instructionsContainer`}>
+                    <p className={`${className}_instructions`}><strong>Game Rules: </strong>Capture as many pawns as you can in 60 seconds using only one knight piece.</p>
+                    <div className={`${className}_gameOptionsContainer`}>
+                        <div className={`${className}_gameOptionsToggleContainer`} onClick={() => setOptionsVisible(!optionsVisible)}>
+                            <p className={`${className}_gameOptionsToggleText`}>Options</p>
+                            <svg className={`${className}_toggleSVG`} viewBox="0 0 100 100" >
+                                <line x1="5" y1="50" x2="95" y2="50" strokeWidth={10}/>
+                                <line x1="50" y1="5" x2="50" y2="95" strokeWidth={10} style={{ display: optionsVisible ? 'none' : 'inherit' }}/>
+                            </svg> 
+                        </div>
+                        <div className={`${className}_options`} style={{ display: optionsVisible ? 'inherit' : 'none' }}>
+                            <div className={`${className}_optionContainer`}>
+                                <p>Sound</p>
+                                <div className={`${className}_optionButtonsContainer`}>
+                                    <button className={classNames(`${className}_optionButton`, soundOn && `${className}_buttonActive`)} onClick={() => setSoundOn(true)}>On</button>
+                                    <button className={classNames(`${className}_optionButton`, !soundOn && `${className}_buttonActive`)} onClick={() => setSoundOn(false)}>Off</button>
+                                </div>
+                            </div>
+                            <div className={`${className}_optionContainer`}>
+                                <p>Red Markers</p>
+                                <div className={`${className}_optionButtonsContainer`}>
+                                    <button className={classNames(`${className}_optionButton`, markersOn && `${className}_buttonActive`)} onClick={() => setMarkersOn(true)}>On</button>
+                                    <button className={classNames(`${className}_optionButton`, !markersOn && `${className}_buttonActive`)} onClick={() => setMarkersOn(false)}>Off</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className={`${className}_gameAreaContainer`}>
+                    <div className={`${className}_scoreTimeContainer`}>
+                        <p className={`${className}_score`}>{`Score: ${score}`}</p>
+                        <p className={`${className}_time`}>{`Time: ${time}`}</p>
+                    </div>
+                    <Board setScore={setScore} gameActive={gameActive} root={root} />
+                </div>
+                <div className={`${className}_buttonsContainer`}>
+                    <button className={`${className}_startButton`} onClick={handleButtonClick}>
+                        {gameActive ? 'Quit Game' : 'Start Game'}
+                    </button>
+                </div>
+                {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} userBest={userBest} userScoresTotal={userScoresTotal} userScoresCount={userScoresCount} globalBest={globalBest} globalScoresTotal={globalScoresTotal} globalScoresCount={globalScoresCount} spinnersVisible={spinnersVisible} />}  
             </div>
-            <div className={`${className}_scoreTimeContainer`}>
-                <p className={`${className}_score`}>{`Score: ${score}`}</p>
-                <p className={`${className}_time`}>{`Time: ${time}`}</p>
-            </div>
-            <Board setScore={setScore} gameActive={gameActive} root={root} />
-            <div className={`${className}_buttonsContainer`}>
-                <button className={`${className}_startButton`} onClick={handleButtonClick}>
-                    {gameActive ? 'Quit Game' : 'Start Game'}
-                </button>
-            </div>
-            {modalVisible && <PostGameModal setModalVisible={setModalVisible} score={score} userBest={userBest} userScoresTotal={userScoresTotal} userScoresCount={userScoresCount} globalBest={globalBest} globalScoresTotal={globalScoresTotal} globalScoresCount={globalScoresCount} spinnersVisible={spinnersVisible} />}  
-        </div>
+        </GameContext.Provider>
     )
 }
 

@@ -1,4 +1,4 @@
-import { useContext } from 'react'
+import { useState, useContext, useEffect } from 'react'
 import KnightSVG from "../Knight/KnightSVG"
 import PawnSVG from "../Pawn/PawnSVG"
 import { BoardSpace } from "../../utils/interfaces"
@@ -8,6 +8,7 @@ import placeAudio from '../../assets/piece-placement.mp3'
 import captureAudio from '../../assets/piece-capture.mp3'
 import GlobalContext from '../../utils/GlobalContext'
 import './styles.css'
+import GameContext from '../../utils/GameContext'
 
 interface Props {
     space: BoardSpace,
@@ -24,14 +25,16 @@ interface Props {
 
 const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPosition, setKnightPosition, validMoves, setValidMoves, setScore }) => {
     const { darkMode } = useContext(GlobalContext)
+    const { soundOn, setOptionsVisible, markersOn } = useContext(GameContext)
 
     const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault()
         if (!space.validMove) return
+        setOptionsVisible(false)
         const newBoard = [...board]
-
-        //Set audio to play
-        const audio = space.pawnVisible ? new Audio(captureAudio) : new Audio(placeAudio)
+        const audio = new Audio(
+            space.pawnVisible ? captureAudio : placeAudio
+        )
         audio.volume = 0.2
         
         //Update Pawn Position, if applicable
@@ -59,8 +62,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
         setBoard(newBoard)
         setKnightPosition([row, col])
         setValidMoves(newValidMoves)
-        audio.play()
-
+        soundOn && audio.play()
     }
 
     const className = 'Space'
@@ -71,7 +73,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
             })} 
             id={`Row_${row}-Col_${col}`} 
             style={{
-                backgroundColor: space.validMove ? '#cb3535' 
+                backgroundColor: space.validMove && markersOn ? '#cb3535' 
                     : (darkMode && space.backgroundColor === '#b58863') ? '#769656'
                     : space.backgroundColor
             }}

@@ -2,17 +2,80 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: space-between;
     gap: 1rem;
+    padding-bottom: 0.5rem;
 }
 
 .Game_instructionsContainer {
     padding: 0 0.5rem;
-    display: flex;
+    display: grid;
     width: 100%;
     max-width: 700px;
     place-self: center;
-    
+    gap: 1rem;
+}
+
+.Game_gameOptionsContainer {
+    display: grid;
+    width: 100%;
+}
+
+.Game_gameOptionsToggleContainer {
+    display: flex;
+    gap: 0.2rem;
+    align-items: center;
+    width: min-content;
+}
+
+.Game_gameOptionsToggleContainer:hover {
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.Game_gameOptionsToggleContainer:hover svg line {
+    stroke-width: 15;
+}
+
+.Game_gameOptionsToggleText {
+    line-height: 100%;
+    white-space: nowrap;
+}
+
+.Game_toggleSVG {
+    width: 0.6rem;
+    fill: #000000;
+    stroke: #000000;
+}
+
+.Game_options {
+    display: grid;
+}
+
+.Game_optionContainer {
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem;
+}
+
+.Game_optionButtonsContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.Game_optionButton {
+    border: solid 1px #00000080;
+    padding: 0.2rem 0.5rem;
+}
+
+.Game_buttonActive {
+    background-color: #b58863;
+    color: #FFFFFF;
+}
+
+.Game_gameAreaContainer {
+    display: grid;
+    gap: 1rem;
 }
 
 .Game_scoreTimeContainer {
@@ -52,11 +115,24 @@
     font-weight: bold;
 }
 
-.Game_darkMode > div > p {
+.Game_darkMode > div > p,
+.Game_darkMode > div > div > p,
+.Game_darkMode > div > div > div > p,
+.Game_darkMode > div > div > div > div > p,
+.Game_darkMode > div > div > div > div > div > button {
     color: #FFFFFF;
 }
 
-.Game_darkMode > div > .Game_startButton {
+.Game_darkMode > div > div > div > div > div > button {
+    border-color: #FFFFFF30
+}
+
+.Game_darkMode > div > div > div > svg {
+    stroke: #FFFFFF;
+}
+
+.Game_darkMode > div > .Game_startButton,
+.Game_darkMode > div > div > div > div > div > .Game_buttonActive {
     background-color: #769656;
 }
 
@@ -66,11 +142,6 @@
         padding: 0;
     }
 
-    .Game_score,
-    .Game_time {
-        font-size: 1.2rem;
-    }
-    
     .Game_buttonsContainer {
         padding: 0 ;
     }
