@@ -1,14 +1,14 @@
-import { useState, useContext, useEffect } from 'react'
+import { useContext } from 'react'
 import KnightSVG from "../Knight/KnightSVG"
 import PawnSVG from "../Pawn/PawnSVG"
 import { BoardSpace } from "../../utils/interfaces"
 import { determineNewPawnPosition, determineValidMoves } from '../../game/functions'
-import classNames from 'classnames'
 import placeAudio from '../../assets/piece-placement.mp3'
 import captureAudio from '../../assets/piece-capture.mp3'
 import GlobalContext from '../../utils/GlobalContext'
-import './styles.css'
 import GameContext from '../../utils/GameContext'
+import classnames from 'classnames'
+import './styles.css'
 
 interface Props {
     space: BoardSpace,
@@ -66,7 +66,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
     const className = 'Space'
     return (
         <div 
-            className={classNames(className, {
+            className={classnames(className, {
                 [className + '_validMove']: space.validMove,
             })} 
             id={`Row_${row}-Col_${col}`} 
