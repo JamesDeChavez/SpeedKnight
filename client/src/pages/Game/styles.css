@@ -18,6 +18,7 @@
 
 .Game_gameOptionsContainer {
     display: grid;
+    gap: 1rem;
     width: 100%;
 }
 

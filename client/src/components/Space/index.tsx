@@ -27,7 +27,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
     const { darkMode } = useContext(GlobalContext)
     const { soundOn, setOptionsVisible, markersOn } = useContext(GameContext)
 
-    const handleClick = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
+    const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault()
         if (!space.validMove) return
         setOptionsVisible(false)
@@ -75,7 +75,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
                     : (darkMode && space.backgroundColor === '#b58863') ? '#769656'
                     : space.backgroundColor
             }}
-            onClick={handleClick}
+            onMouseDown={handleMouseDown}
         >
             {space.knightVisible && <KnightSVG />}
             {space.pawnVisible && <PawnSVG />}

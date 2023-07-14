@@ -4,8 +4,3 @@
     display: flex;
     place-content: center;
 }
-
-.Space_validMove:hover {
-    cursor: pointer;
-    opacity: 0.8;
-}
