@@ -71,7 +71,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
             })} 
             id={`Row_${row}-Col_${col}`} 
             style={{
-                backgroundColor: space.validMove && markersOn ? '#cb3535' 
+                backgroundColor: (space.validMove && markersOn) ? '#cb3535' 
                     : (darkMode && space.backgroundColor === '#b58863') ? '#769656'
                     : space.backgroundColor
             }}
