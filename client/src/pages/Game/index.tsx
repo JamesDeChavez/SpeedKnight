@@ -35,6 +35,13 @@ const Game: React.FC<Props> = ({ root }) => {
     const scoreRef = useRef<number>(score)
 
     useEffect(() => {
+        const soundOnPref = localStorage.getItem('soundOn')
+        const markersOnPref = localStorage.getItem('markersOn')
+        setSoundOn(soundOnPref === 'true' ? true : false)
+        setMarkersOn(markersOnPref === 'true' ? true : false)
+    }, [])
+
+    useEffect(() => {
         timeRef.current = time
     }, [time])
 
@@ -188,6 +195,29 @@ const Game: React.FC<Props> = ({ root }) => {
         setGameActive(true)
     }
 
+    const handleSoundClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, action: string) => {
+        e.preventDefault()
+        if (action === 'ON') {
+            setSoundOn(true)
+            localStorage.setItem('soundOn', 'true')
+        } else {
+            setSoundOn(false)
+            localStorage.setItem('soundOn', 'false')
+        }
+    }
+
+    const handleMarkersClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, action: string) => {
+        e.preventDefault()
+        if (action === 'ON') {
+            setMarkersOn(true)
+            localStorage.setItem('markersOn', 'true')
+        } else {
+            setMarkersOn(false)
+            localStorage.setItem('markersOn', 'false')
+        }
+    
+    }
+
     const className = 'Game'
     return (
         <GameContext.Provider value={{ soundOn, setOptionsVisible, markersOn }}>
@@ -206,15 +236,15 @@ const Game: React.FC<Props> = ({ root }) => {
                             <div className={`${className}_optionContainer`}>
                                 <p>Sound</p>
                                 <div className={`${className}_optionButtonsContainer`}>
-                                    <button className={classNames(`${className}_optionButton`, soundOn && `${className}_buttonActive`)} onClick={() => setSoundOn(true)}>On</button>
-                                    <button className={classNames(`${className}_optionButton`, !soundOn && `${className}_buttonActive`)} onClick={() => setSoundOn(false)}>Off</button>
+                                    <button className={classNames(`${className}_optionButton`, soundOn && `${className}_buttonActive`)} onClick={(e) => handleSoundClick(e, 'ON')}>On</button>
+                                    <button className={classNames(`${className}_optionButton`, !soundOn && `${className}_buttonActive`)} onClick={(e) => handleSoundClick(e, 'OFF')}>Off</button>
                                 </div>
                             </div>
                             <div className={`${className}_optionContainer`}>
                                 <p>Red Markers</p>
                                 <div className={`${className}_optionButtonsContainer`}>
-                                    <button className={classNames(`${className}_optionButton`, markersOn && `${className}_buttonActive`)} onClick={() => setMarkersOn(true)}>On</button>
-                                    <button className={classNames(`${className}_optionButton`, !markersOn && `${className}_buttonActive`)} onClick={() => setMarkersOn(false)}>Off</button>
+                                    <button className={classNames(`${className}_optionButton`, markersOn && `${className}_buttonActive`)} onClick={(e) => handleMarkersClick(e, 'ON')}>On</button>
+                                    <button className={classNames(`${className}_optionButton`, !markersOn && `${className}_buttonActive`)} onClick={(e) => handleMarkersClick(e, 'OFF')}>Off</button>
                                 </div>
                             </div>
                         </div>
