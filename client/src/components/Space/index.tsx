@@ -32,9 +32,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
         if (!space.validMove) return
         setOptionsVisible(false)
         const newBoard = [...board]
-        const audio = new Audio(
-            space.pawnVisible ? captureAudio : placeAudio
-        )
+        const audio = space.pawnVisible ? new Audio(captureAudio) : new Audio(placeAudio)
         audio.volume = 0.2
         
         //Update Pawn Position, if applicable
