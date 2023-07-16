@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 1rem;
+    gap: 0.5rem;
     padding-bottom: 0.5rem;
 }
 
@@ -13,12 +13,12 @@
     width: 100%;
     max-width: 700px;
     place-self: center;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .Game_gameOptionsContainer {
     display: grid;
-    gap: 1rem;
+    gap: 0.5rem;
     width: 100%;
 }
 
@@ -80,7 +80,7 @@
 
 .Game_gameAreaContainer {
     display: grid;
-    gap: 1rem;
+    gap: 0.5rem;
 }
 
 .Game_scoreTimeContainer {
@@ -95,6 +95,20 @@
 .Game_score,
 .Game_time {
     user-select: none;
+}
+
+.Game_metricsContainer {
+    padding: 0 0.5rem;
+    width: 100%;
+    max-width: 700px;
+    place-self: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.Game_pathsContainer {
+    display: flex;
+    gap: 0.5rem;
 }
 
 .Game_buttonsContainer {
@@ -143,11 +157,10 @@
 
 @media screen and (min-width: 700px) {
     .Game_instructionsContainer,
-    .Game_scoreTimeContainer {
+    .Game_buttonsContainer,
+    .Game_scoreTimeContainer,
+    .Game_metricsContainer {
         padding: 0;
     }
 
-    .Game_buttonsContainer {
-        padding: 0 ;
-    }
 }

@@ -1,17 +1,18 @@
-import { useState, useEffect, useLayoutEffect } from 'react'
+import { useState, useEffect, useLayoutEffect, useContext } from 'react'
 import { BoardSpace } from '../../utils/interfaces'
-import { createBoard, createEmptyBoard } from '../../game/functions'
+import { calcBestPath, createBoard, createEmptyBoard, determinePawnStart } from '../../game/functions'
 import Space from '../Space'
 import { gsap } from 'gsap'
 import './styles.css'
+import GameContext from '../../utils/GameContext'
 
 interface Props {
-    setScore: React.Dispatch<React.SetStateAction<number>>,
     gameActive: boolean,
     root: React.MutableRefObject<null>
 }
 
-const Board: React.FC<Props> = ({setScore, gameActive, root}) => {    
+const Board: React.FC<Props> = ({ gameActive, root }) => {   
+    const { setBestPath } = useContext(GameContext)
     const [board, setBoard] = useState<BoardSpace[][]>([])
     const [knightPosition, setKnightPosition] = useState<[number, number]>([0, 0])
     const [validMoves, setValidMoves] = useState<[number, number][]>([])
@@ -22,11 +23,11 @@ const Board: React.FC<Props> = ({setScore, gameActive, root}) => {
             setBoard(emptyBoard)
             return
         }
-        const newBoard = createBoard()
+        const { pawnRow, pawnCol } = determinePawnStart()
+        const newBoard = createBoard(pawnRow, pawnCol)
         setKnightPosition([7, 6])
-        setValidMoves([
-            [6, 4], [5, 5], [5, 7]
-        ])
+        setBestPath(calcBestPath(7, 6, pawnRow, pawnCol))
+        setValidMoves([ [6, 4], [5, 5], [5, 7] ])
         setBoard(newBoard)
     }, [gameActive])
 
@@ -53,7 +54,6 @@ const Board: React.FC<Props> = ({setScore, gameActive, root}) => {
                         setKnightPosition={setKnightPosition}
                         validMoves={validMoves}
                         setValidMoves={setValidMoves}
-                        setScore={setScore}
                     />
                 })
             })}

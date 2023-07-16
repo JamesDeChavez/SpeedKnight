@@ -2,7 +2,7 @@ import { useContext } from 'react'
 import KnightSVG from "../Knight/KnightSVG"
 import PawnSVG from "../Pawn/PawnSVG"
 import { BoardSpace } from "../../utils/interfaces"
-import { determineNewPawnPosition, determineValidMoves } from '../../game/functions'
+import { calcBestPath, determineNewPawnPosition, determineValidMoves } from '../../game/functions'
 import placeAudio from '../../assets/piece-placement.mp3'
 import captureAudio from '../../assets/piece-capture.mp3'
 import GlobalContext from '../../utils/GlobalContext'
@@ -19,13 +19,12 @@ interface Props {
     knightPosition: [number, number],
     setKnightPosition: React.Dispatch<React.SetStateAction<[number, number]>>,
     validMoves: [number, number][],
-    setValidMoves: React.Dispatch<React.SetStateAction<[number, number][]>>,
-    setScore: React.Dispatch<React.SetStateAction<number>>
+    setValidMoves: React.Dispatch<React.SetStateAction<[number, number][]>>
 }
 
-const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPosition, setKnightPosition, validMoves, setValidMoves, setScore }) => {
+const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPosition, setKnightPosition, validMoves, setValidMoves }) => {
     const { darkMode } = useContext(GlobalContext)
-    const { soundOn, setOptionsVisible, markersOn } = useContext(GameContext)
+    const { soundOn, setOptionsVisible, markersOn, setScore, bestPath, setBestPath, currPath, setCurrPath, setWastedMoves, setBestPathTotal, setUserPathTotal } = useContext(GameContext)
 
     const handleMouseDown = (e: React.MouseEvent<HTMLDivElement, MouseEvent>) => {
         e.preventDefault()
@@ -34,14 +33,21 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
         const newBoard = [...board]
         const audio = space.pawnVisible ? new Audio(captureAudio) : new Audio(placeAudio)
         audio.volume = 0.2
-        
-        //Update Pawn Position, if applicable
+
+        //Update Wasted Moves Metric, if applicable
+        if (currPath >= bestPath) setWastedMoves(prevState => prevState + 1)        
+
+        //Update Pawn Position and related metrics, if applicable
         if (space.pawnVisible) {
             newBoard[row][col].pawnVisible = false
             const newPawnPosition = determineNewPawnPosition([row, col])
             newBoard[newPawnPosition[0]][newPawnPosition[1]].pawnVisible = true
-            setScore(score => score + 1)
-        }
+            setScore(prevState => prevState + 1)
+            setBestPathTotal(prevState => prevState + bestPath)
+            setUserPathTotal(prevState => prevState + currPath + 1)
+            setBestPath(calcBestPath(row, col, newPawnPosition[0], newPawnPosition[1]))
+            setCurrPath(0)        
+        } else setCurrPath(prevState => prevState + 1)
 
         //Update Knight Position
         newBoard[row][col].knightVisible = true
@@ -65,15 +71,13 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
 
     const className = 'Space'
     return (
-        <div 
-            className={classNames(className, {
-                [className + '_validMove']: space.validMove,
-            })} 
+        <div className={classNames(className, 
+                space.validMove && className + '_validMove' 
+            )} 
             id={`Row_${row}-Col_${col}`} 
-            style={{
-                backgroundColor: (space.validMove && markersOn) ? '#cb3535' 
-                    : (darkMode && space.backgroundColor === '#b58863') ? '#769656'
-                    : space.backgroundColor
+            style={{ backgroundColor: (space.validMove && markersOn) ? '#cb3535' 
+                : (darkMode && space.backgroundColor === '#b58863') ? '#769656'
+                : space.backgroundColor
             }}
             onMouseDown={handleMouseDown}
         >

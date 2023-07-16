@@ -15,10 +15,13 @@ interface Props {
     globalBest: number,
     globalScoresTotal: number,
     globalScoresCount: number,
-    spinnersVisible: { user: boolean, global: boolean }
+    spinnersVisible: { user: boolean, global: boolean },
+    wastedMoves: number,
+    bestPathTotal: number,
+    userPathTotal: number
 }
 
-const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, userScoresTotal, userScoresCount, globalBest, globalScoresTotal, globalScoresCount, spinnersVisible }) => {    
+const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, userScoresTotal, userScoresCount, globalBest, globalScoresTotal, globalScoresCount, spinnersVisible, wastedMoves, bestPathTotal, userPathTotal }) => {    
     const { darkMode, userLoggedIn } = useContext(GlobalContext)
     const [clipBoardModalVisible, setClipBoardModalVisible] = useState(false)
     const canvasRef = useRef(null)
@@ -61,37 +64,53 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                         <p className={`${className}_scoreText`}>Your Score</p>
                     </div>
                     <div className={`${className}_metricsContainer`}>
-                        <div className={`${className}_metric`}>
-                            {spinnersVisible.user || spinnersVisible.global ?
-                                <Spinner />
-                            :
-                                <p className={`${className}_metricNumber`}>{Math.floor(userScoresTotal / userScoresCount)}</p>
-                            }
-                            <p className={`${className}_metricText`}>Your Average</p>
+                        <div className={`${className}_scoreMetricsContainer`}>
+                            <div className={`${className}_metric`}>
+                                {spinnersVisible.user || spinnersVisible.global ?
+                                    <Spinner />
+                                :
+                                    <p className={`${className}_metricNumber`}>{Math.floor(userScoresTotal / userScoresCount)}</p>
+                                }
+                                <p className={`${className}_metricText`}>Your Average</p>
+                            </div>
+                            <div className={`${className}_metric`}>
+                                {spinnersVisible.user || spinnersVisible.global ?
+                                    <Spinner />
+                                :
+                                    <p className={`${className}_metricNumber`}>{userBest}</p>
+                                }
+                                <p className={`${className}_metricText`}>Your Best</p>
+                            </div>
+                            <div className={`${className}_metric`}>
+                                {spinnersVisible.user || spinnersVisible.global ?
+                                    <Spinner />
+                                :
+                                    <p className={`${className}_metricNumber`}>{Math.floor(globalScoresTotal / globalScoresCount)}</p>
+                                }
+                                <p className={`${className}_metricText`}>Global Average</p>
+                            </div>
+                            <div className={`${className}_metric`}>
+                                {spinnersVisible.user || spinnersVisible.global ?
+                                    <Spinner />
+                                :
+                                    <p className={`${className}_metricNumber`}>{globalBest}</p>
+                                }
+                                <p className={`${className}_metricText`}>Global Best</p>
+                            </div>
                         </div>
-                        <div className={`${className}_metric`}>
-                            {spinnersVisible.user || spinnersVisible.global ?
-                                <Spinner />
-                            :
-                                <p className={`${className}_metricNumber`}>{userBest}</p>
-                            }
-                            <p className={`${className}_metricText`}>Your Best</p>
-                        </div>
-                        <div className={`${className}_metric`}>
-                            {spinnersVisible.user || spinnersVisible.global ?
-                                <Spinner />
-                            :
-                                <p className={`${className}_metricNumber`}>{Math.floor(globalScoresTotal / globalScoresCount)}</p>
-                            }
-                            <p className={`${className}_metricText`}>Global Average</p>
-                        </div>
-                        <div className={`${className}_metric`}>
-                            {spinnersVisible.user || spinnersVisible.global ?
-                                <Spinner />
-                            :
-                                <p className={`${className}_metricNumber`}>{globalBest}</p>
-                            }
-                            <p className={`${className}_metricText`}>Global Best</p>
+                        <div className={`${className}_effMetricsContainer`}>
+                            <div className={`${className}_metric`}>
+                                <p className={`${className}_metricNumber`}>{wastedMoves}</p>
+                                <p className={`${className}_metricText`}>Wasted Moves</p>
+                            </div>
+                            <div className={`${className}_metric`}>
+                                <p className={`${className}_metricNumber`}>{Math.round(bestPathTotal / score * 10) / 10}</p>
+                                <p className={`${className}_metricText`}>Best Path Avg. Steps</p>
+                            </div>
+                            <div className={`${className}_metric`}>
+                                <p className={`${className}_metricNumber`}>{Math.round(userPathTotal / score * 10) / 10}</p>
+                                <p className={`${className}_metricText`}>Your Path Avg. Steps</p>
+                            </div>
                         </div>
                     </div>
                 </div>
