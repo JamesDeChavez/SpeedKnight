@@ -15,7 +15,7 @@ export const createEmptyBoard = () => {
         for (let j = 0; j < columns.length; j++) {
             newRow.push({
                 backgroundColor: (i + j) % 2 === 0 
-                    ? '#b58863' : '#f0d9b5',
+                    ? '#f0d9b5' : '#b58863',
                 knightVisible: false,
                 pawnVisible: false,
                 validMove: false
@@ -42,7 +42,7 @@ export const createBoard = (pawnRow: number, pawnCol: number) => {
         for (let j = 0; j < columns.length; j++) {
             newRow.push({
                 backgroundColor: (i + j) % 2 === 0 
-                    ? '#b58863' : '#f0d9b5',
+                    ? '#f0d9b5' : '#b58863',
                 knightVisible: (rows[i] === 7 && columns[j] === 6) 
                     ? true : false,
                 pawnVisible: (rows[i] === pawnRow && columns[j] === pawnCol) 
