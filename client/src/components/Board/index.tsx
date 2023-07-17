@@ -11,8 +11,8 @@ interface Props {
     root: React.MutableRefObject<null>
 }
 
-const Board: React.FC<Props> = ({ gameActive, root }) => {   
-    const { setBestPath } = useContext(GameContext)
+const Board: React.FC<Props> = ({ gameActive, root }) => {
+    const { setBestPath, setAudit } = useContext(GameContext)
     const [board, setBoard] = useState<BoardSpace[][]>([])
     const [knightPosition, setKnightPosition] = useState<[number, number]>([0, 0])
     const [validMoves, setValidMoves] = useState<[number, number][]>([])
@@ -26,9 +26,18 @@ const Board: React.FC<Props> = ({ gameActive, root }) => {
         const { pawnRow, pawnCol } = determinePawnStart()
         const newBoard = createBoard(pawnRow, pawnCol)
         setKnightPosition([7, 6])
-        setBestPath(calcBestPath(7, 6, pawnRow, pawnCol))
+        const initBestPath = calcBestPath(7, 6, pawnRow, pawnCol)
+        setBestPath(initBestPath)
         setValidMoves([ [6, 4], [5, 5], [5, 7] ])
         setBoard(newBoard)
+        setAudit([{
+            pawnRow, pawnCol,
+            knightRow: 7, knightCol: 6,
+            row: 7, col: 6,
+            score: 0, wastedMoves: 0,
+            bestPath: initBestPath, currPath: 0,
+            board: JSON.parse(JSON.stringify(newBoard))
+        }])
     }, [gameActive])
 
     useLayoutEffect(() => {

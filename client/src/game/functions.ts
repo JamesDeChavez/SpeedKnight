@@ -1,4 +1,4 @@
-import { BoardSpace } from "../utils/interfaces"
+import { Audit, BoardSpace } from "../utils/interfaces"
 
 const rows = [0, 1, 2, 3, 4, 5, 6, 7]
 const columns = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -43,9 +43,9 @@ export const createBoard = (pawnRow: number, pawnCol: number) => {
             newRow.push({
                 backgroundColor: (i + j) % 2 === 0 
                     ? '#f0d9b5' : '#b58863',
-                knightVisible: (rows[i] === 7 && columns[j] === 6) 
+                knightVisible: (i === 7 && j === 6) 
                     ? true : false,
-                pawnVisible: (rows[i] === pawnRow && columns[j] === pawnCol) 
+                pawnVisible: (i === pawnRow && j === pawnCol) 
                     ? true : false,
                 validMove: false
             })
@@ -114,3 +114,4 @@ export const calcBestPath = (knightRow: number, knightCol: number, pawnRow: numb
     }
     return -1
 }
+
