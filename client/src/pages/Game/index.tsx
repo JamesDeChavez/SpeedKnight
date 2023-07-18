@@ -221,7 +221,6 @@ const Game: React.FC<Props> = ({ root }) => {
         setUserPathTotal(0)
         setGameActive(true)
         setOptionsVisible(false)
-        setWastedMovesVisible(false)
         setWastedMovesData([])
         intervalRef.current = setInterval(() => {
             if (timeRef.current <= 0) {
