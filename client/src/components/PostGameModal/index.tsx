@@ -104,11 +104,11 @@ const PostGameModal: React.FC<Props> = ({ score, setModalVisible, userBest, user
                                 <p className={`${className}_metricText`}>Wasted Moves</p>
                             </div>
                             <div className={`${className}_metric`}>
-                                <p className={`${className}_metricNumber`}>{Math.round(bestPathTotal / score * 10) / 10}</p>
+                                <p className={`${className}_metricNumber`}>{score === 0 ? '-' : Math.round(bestPathTotal / score * 10) / 10}</p>
                                 <p className={`${className}_metricText`}>Best Path Avg. Steps</p>
                             </div>
                             <div className={`${className}_metric`}>
-                                <p className={`${className}_metricNumber`}>{Math.round(userPathTotal / score * 10) / 10}</p>
+                                <p className={`${className}_metricNumber`}>{score === 0 ? '-' : Math.round(userPathTotal / score * 10) / 10}</p>
                                 <p className={`${className}_metricText`}>Your Path Avg. Steps</p>
                             </div>
                         </div>
