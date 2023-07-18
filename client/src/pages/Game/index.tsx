@@ -27,7 +27,7 @@ const Game: React.FC<Props> = ({ root }) => {
     const [globalScoresTotal, setGlobalScoresTotal] = useState(0)
     const [globalScoresCount, setGlobalScoresCount] = useState(1)
     const [spinnersVisible, setSpinnersVisible] = useState({ user: false, global: false })
-    const [modalVisible, setModalVisible] = useState(false)
+    const [modalVisible, setModalVisible] = useState(true)
     const [submitScoreData, setSubmitScoreData] = useState(null)
     const [optionsVisible, setOptionsVisible] = useState(false)
     const [soundOn, setSoundOn] = useState(true)
