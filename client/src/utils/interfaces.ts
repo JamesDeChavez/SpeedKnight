@@ -18,3 +18,11 @@ export interface Audit {
     wastedMoves: number,
     board: BoardSpace[][]
 }
+
+export interface WastedMoves {
+    knight: string,
+    pawn: string,
+    bestPath: number,
+    userPath: number,
+    userMoves: string[]
+}

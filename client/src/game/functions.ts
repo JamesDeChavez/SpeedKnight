@@ -1,4 +1,5 @@
-import { BoardSpace } from "../utils/interfaces"
+import { start } from "repl"
+import { Audit, BoardSpace, WastedMoves } from "../utils/interfaces"
 
 const rows = [0, 1, 2, 3, 4, 5, 6, 7]
 const columns = [0, 1, 2, 3, 4, 5, 6, 7]
@@ -114,4 +115,43 @@ export const calcBestPath = (knightRow: number, knightCol: number, pawnRow: numb
     }
     return -1
 }
+
+export const createWastedMovesAnalysis = (audit: Audit[]) => {
+    const row = [8, 7, 6, 5, 4, 3, 2, 1]
+    const col = ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h']
+    if (audit[audit.length - 1].wastedMoves === 0) return []
+    const wastedMovesAnalysis: WastedMoves[] = []
+
+    let currIdx = 1
+    let startOfPath = 0
+    let endOfPath = 0
+    let pawnPosition = ''
+    let knightPosition = ''
+    let knightMovement = []
+
+    while (currIdx < audit.length) {
+        if (audit[currIdx].currPath === 0 && audit[currIdx - 1].currPath > audit[currIdx - 1].bestPath) {
+            pawnPosition = `${col[audit[currIdx].col]}${row[audit[currIdx].row]}`
+            startOfPath = currIdx - 1 - audit[currIdx - 1].currPath
+            endOfPath = currIdx
+            knightPosition = `${col[audit[startOfPath].col]}${row[audit[startOfPath].row]}`
+            for (let i = startOfPath; i <= endOfPath; i++) {
+                knightMovement.push(`${col[audit[i].col]}${row[audit[i].row]}`)
+            }
+            wastedMovesAnalysis.push({
+                pawn: pawnPosition,
+                knight: knightPosition,
+                userMoves: knightMovement,
+                bestPath: audit[currIdx - 1].bestPath,
+                userPath: knightMovement.length - 1
+            })
+            currIdx = endOfPath
+            pawnPosition = ''
+            knightMovement = []
+        }
+        currIdx++
+    }
+    return wastedMovesAnalysis
+}
+
 

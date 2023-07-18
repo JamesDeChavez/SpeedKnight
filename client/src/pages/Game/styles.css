@@ -11,7 +11,7 @@
     padding: 0 0.5rem;
     display: grid;
     width: 100%;
-    max-width: 700px;
+    max-width: 75vh;
     place-self: center;
     gap: 0.5rem;
 }
@@ -22,23 +22,28 @@
     width: 100%;
 }
 
-.Game_gameOptionsToggleContainer {
+.Game_gameOptionsToggleContainer,
+.Game_wastedMovesToggleContainer {
     display: flex;
     gap: 0.2rem;
     align-items: center;
     width: min-content;
+    white-space: nowrap;
 }
 
-.Game_gameOptionsToggleContainer:hover {
+.Game_gameOptionsToggleContainer:hover,
+.Game_wastedMovesToggleContainer:hover {
     cursor: pointer;
     font-weight: bold;
 }
 
-.Game_gameOptionsToggleContainer:hover svg line {
+.Game_gameOptionsToggleContainer:hover svg line,
+.Game_wastedMovesToggleContainer:hover svg line {
     stroke-width: 15;
 }
 
-.Game_gameOptionsToggleText {
+.Game_gameOptionsToggleText,
+.Game_wastedMovesToggleText {
     line-height: 100%;
     white-space: nowrap;
 }
@@ -88,7 +93,7 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    max-width: 700px;
+    max-width: 75vh;
     place-self: center;
 }
 
@@ -100,7 +105,7 @@
 .Game_metricsContainer {
     padding: 0 0.5rem;
     width: 100%;
-    max-width: 700px;
+    max-width: 75vh;
     place-self: center;
     display: flex;
     justify-content: space-between;
@@ -111,11 +116,37 @@
     gap: 0.5rem;
 }
 
+.Game_wastedMovesContainer {
+    padding: 0 0.5rem;
+    max-width: 75vh;
+    place-self: center;
+    width: 100%;
+    display: grid;
+    gap: 0.5rem;
+}
+
+.Game_wastedMoves {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.Game_moveContainer {
+    display: grid;
+    padding: 0.5rem;
+    border: solid 1px #000000;
+    gap: 0.5rem;
+}
+
+.Game_moveSummary {
+    display: flex;
+    justify-content: space-between;
+}
+
 .Game_buttonsContainer {
     display: flex;
     padding: 0 0.5rem;
     width: 100%;
-    max-width: 700px;
+    max-width: 75vh;
     place-self: center;
 }
 
@@ -142,11 +173,13 @@
     color: #FFFFFF;
 }
 
-.Game_darkMode > div > div > div > div > div > button {
+.Game_darkMode > div > div > div > div > div > button,
+.Game_darkMode > div > div > .Game_moveContainer {
     border-color: #FFFFFF30
 }
 
-.Game_darkMode > div > div > div > svg {
+.Game_darkMode > div > div > div > svg,
+.Game_darkMode > div > div > svg  {
     stroke: #FFFFFF;
 }
 
@@ -155,12 +188,48 @@
     background-color: #769656;
 }
 
+
 @media screen and (min-width: 700px) {
     .Game_instructionsContainer,
-    .Game_buttonsContainer,
     .Game_scoreTimeContainer,
-    .Game_metricsContainer {
+    .Game_metricsContainer,
+    .Game_wastedMovesContainer,
+    .Game_buttonsContainer {
         padding: 0;
     }
+}
+@media screen and (min-width: 1100px) {
+    .Game {
+        display: grid;
+        grid-template-columns: 2fr 1fr;
+        grid-template-rows: auto auto 1fr auto;
+        column-gap: 1rem;
+        padding: 1rem;
+    }
+    .Game_gameAreaContainer {
+        grid-row: 1/4;
+        grid-column: 1/2;
+        align-self: start;
+    }
+    .Game_instructionsContainer {
+        place-self: start;
+    }
+    .Game_buttonsContainer {
+        justify-self: start;
+        align-self: end;
+        padding: 0;
+        padding-bottom: 0.5rem;
+    }
+    .Game_scoreTimeContainer {
+        align-self: end;
+    }
+    .Game_metricsContainer {
+        align-self: start;
+    }
+}
 
+@media screen and (min-width: 1200px) {
+    .Game {
+        padding: 1rem 10%;
+    }
 }

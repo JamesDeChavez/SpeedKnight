@@ -5,10 +5,11 @@ import PostGameModal from '../../components/PostGameModal'
 import key from '../../config/config'
 import GameContext from '../../utils/GameContext'
 import { API, Auth } from 'aws-amplify'
-import { Audit } from '../../utils/interfaces'
+import { Audit, WastedMoves } from '../../utils/interfaces'
 import { gsap } from 'gsap'
 import classNames from 'classnames'
 import './styles.css'
+import { createWastedMovesAnalysis } from '../../game/functions'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -37,6 +38,8 @@ const Game: React.FC<Props> = ({ root }) => {
     const [bestPathTotal, setBestPathTotal] = useState(0)
     const [userPathTotal, setUserPathTotal] = useState(0)
     const [audit, setAudit] = useState<Audit[]>([])
+    const [wastedMovesVisible, setWastedMovesVisible] = useState(false)
+    const [wastedMovesData, setWastedMovesData] = useState<WastedMoves[]>([])
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
     const scoreRef = useRef<number>(score)
@@ -185,6 +188,7 @@ const Game: React.FC<Props> = ({ root }) => {
             }
         }
         submitScore()
+        
     }, [gameActive])
 
     useLayoutEffect(() => {
@@ -206,6 +210,7 @@ const Game: React.FC<Props> = ({ root }) => {
             setBestPath(0)
             setCurrPath(0)
             clearInterval(intervalRef.current)
+            setWastedMovesData(createWastedMovesAnalysis(auditRef.current))
             return
         }
         setTime(60)
@@ -216,11 +221,14 @@ const Game: React.FC<Props> = ({ root }) => {
         setUserPathTotal(0)
         setGameActive(true)
         setOptionsVisible(false)
+        setWastedMovesVisible(false)
+        setWastedMovesData([])
         intervalRef.current = setInterval(() => {
             if (timeRef.current <= 0) {
                 clearInterval(intervalRef.current)
                 setGameActive(false)
                 setModalVisible(true)
+                setWastedMovesData(createWastedMovesAnalysis(auditRef.current))
                 setSpinnersVisible({ user: true, global: true })
                 return
             }
@@ -297,6 +305,35 @@ const Game: React.FC<Props> = ({ root }) => {
                         <p className={`${className}_wasted`} >{`Wasted: ${wastedMoves}`}</p>
                     </div>
                 </div>
+                <div className={`${className}_wastedMovesContainer`}>
+                    <div className={`${className}_wastedMovesToggleContainer`} onClick={() => setWastedMovesVisible(!wastedMovesVisible)}>
+                        <p className={`${className}_wastedMovesToggleText`}>Wasted Moves Details</p>
+                        <svg className={`${className}_toggleSVG`} viewBox="0 0 100 100" >
+                            <line x1="5" y1="50" x2="95" y2="50" strokeWidth={10}/>
+                            <line x1="50" y1="5" x2="50" y2="95" strokeWidth={10} style={{ display: wastedMovesVisible ? 'none' : 'inherit' }}/>
+                        </svg> 
+                    </div>
+                    {wastedMovesData.length <= 0 
+                        ? <p style={{ display: wastedMovesVisible ? 'inherit' : 'none' }}>Your inefficient moves will appear here for review</p>
+                        : <div className={`${className}_wastedMoves`} style={{ display: wastedMovesVisible ? 'inherit' : 'none' }}>
+                                {wastedMovesData.map((move, idx) => {
+                                    return (
+                                    <div key={`wastedmove_${idx}`} className={`${className}_moveContainer`}>
+                                        <div className={`${className}_moveSummary`}>
+                                            <p>{`Knight: ${move.knight}`}</p>
+                                            <p>{`Pawn: ${move.pawn}`}</p>
+                                            <p>{`Best Path: ${move.bestPath}`}</p>
+                                            <p>{`Your Path: ${move.userPath}`}</p>
+                                        </div>
+                                        <div className={`${className}_moveDetails`}>
+                                            <p>{`Your Moves: ${move.userMoves.map(usermove => ` ${usermove}`)}`}</p>
+                                        </div>
+                                    </div>
+                                    )
+                                })}
+                        </div>
+                    }
+                </div>              
                 <div className={`${className}_buttonsContainer`}>
                     <button className={`${className}_startButton`} onClick={handleButtonClick}>
                         {gameActive ? 'Quit Game' : 'Start Game'}
