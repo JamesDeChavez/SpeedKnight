@@ -211,6 +211,7 @@ const Game: React.FC<Props> = ({ root }) => {
             setCurrPath(0)
             clearInterval(intervalRef.current)
             setWastedMovesData(createWastedMovesAnalysis(auditRef.current))
+            setWastedMovesVisible(true)
             return
         }
         setTime(60)
@@ -222,12 +223,14 @@ const Game: React.FC<Props> = ({ root }) => {
         setGameActive(true)
         setOptionsVisible(false)
         setWastedMovesData([])
+        setWastedMovesVisible(false)
         intervalRef.current = setInterval(() => {
             if (timeRef.current <= 0) {
                 clearInterval(intervalRef.current)
                 setGameActive(false)
                 setModalVisible(true)
                 setWastedMovesData(createWastedMovesAnalysis(auditRef.current))
+                setWastedMovesVisible(true)
                 setSpinnersVisible({ user: true, global: true })
                 return
             }
