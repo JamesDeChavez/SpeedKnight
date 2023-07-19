@@ -33,29 +33,31 @@ export const determinePawnStart = () => {
     }
 }
 
-export const createBoard = (pawnRow: number, pawnCol: number) => {
+export const createBoard = (pawnRow: number, pawnCol: number, knightRow: number, knightCol: number, clickOn: boolean) => {
     const newBoard: BoardSpace[][] = []
-    const validMoves = determineValidMoves(7, 6)
     
     for (let i = 0; i < rows.length; i++) {
         const newRow = []
         for (let j = 0; j < columns.length; j++) {
             newRow.push({
                 backgroundColor: (i + j) % 2 === 0 
-                    ? '#f0d9b5' : '#b58863',
-                knightVisible: (i === 7 && j === 6) 
-                    ? true : false,
+                ? '#f0d9b5' : '#b58863',
+                knightVisible: (i === knightRow && j === knightCol) 
+                ? true : false,
                 pawnVisible: (i === pawnRow && j === pawnCol) 
-                    ? true : false,
+                ? true : false,
                 validMove: false
             })
         }
         newBoard.push(newRow)
     }
-
-    validMoves.forEach(move => {
-        newBoard[move[0]][move[1]].validMove = true
-    })
+    
+    if(clickOn) {
+        const validMoves = determineValidMoves(knightRow, knightCol)
+        validMoves.forEach(move => {
+            newBoard[move[0]][move[1]].validMove = true
+        })
+    }
 
     return newBoard
 }
@@ -151,6 +153,34 @@ export const createWastedMovesAnalysis = (audit: Audit[]) => {
         currIdx++
     }
     return wastedMovesAnalysis
+}
+
+export const stringToRowCol = (str: string) => {
+    const strToRow: any = {
+        8: 0,
+        7: 1,
+        6: 2,
+        5: 3,
+        4: 4,
+        3: 5,
+        2: 6,
+        1: 7
+    }
+    const strToCol: any = {
+        'a': 0,
+        'b': 1,
+        'c': 2,
+        'd': 3,
+        'e': 4,
+        'f': 5,
+        'g': 6,
+        'h': 7
+    }
+
+    return {
+        row: strToRow[Number(str[1])],
+        col: strToCol[str[0]]
+    }
 }
 
 

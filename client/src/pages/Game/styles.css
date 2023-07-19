@@ -133,13 +133,23 @@
 .Game_moveContainer {
     display: grid;
     padding: 0.5rem;
-    border: solid 1px #000000;
+    border: solid 1px #00000080;
     gap: 0.5rem;
+}
+
+.Game_moveContainer:hover {
+    cursor: pointer;
+    border-color: #000000;
 }
 
 .Game_moveSummary {
     display: flex;
     justify-content: space-between;
+}
+
+.Game_wastedMoveText {
+    user-select: none;
+    text-align: start;
 }
 
 .Game_buttonsContainer {
@@ -169,6 +179,7 @@
 .Game_darkMode > div > div > p,
 .Game_darkMode > div > div > div > p,
 .Game_darkMode > div > div > div > div > p,
+.Game_darkMode > div > div > button > div > p,
 .Game_darkMode > div > div > div > div > div > button {
     color: #FFFFFF;
 }
@@ -176,6 +187,10 @@
 .Game_darkMode > div > div > div > div > div > button,
 .Game_darkMode > div > div > .Game_moveContainer {
     border-color: #FFFFFF30
+}
+
+.Game_darkMode > div > div > .Game_moveContainer:hover {
+    border-color: #FFFFFF;
 }
 
 .Game_darkMode > div > div > div > svg,

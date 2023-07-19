@@ -5,11 +5,11 @@ import PostGameModal from '../../components/PostGameModal'
 import key from '../../config/config'
 import GameContext from '../../utils/GameContext'
 import { API, Auth } from 'aws-amplify'
-import { Audit, WastedMoves } from '../../utils/interfaces'
+import { Audit, WastedMoves, BoardSpace } from '../../utils/interfaces'
 import { gsap } from 'gsap'
 import classNames from 'classnames'
 import './styles.css'
-import { createWastedMovesAnalysis } from '../../game/functions'
+import { createBoard, createWastedMovesAnalysis, stringToRowCol } from '../../game/functions'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -17,6 +17,7 @@ interface Props {
 
 const Game: React.FC<Props> = ({ root }) => {
     const { darkMode, userLoggedIn, userData  } = useContext(GlobalContext)
+    const [board, setBoard] = useState<BoardSpace[][]>([])
     const [gameActive, setGameActive] = useState(false)
     const [score, setScore] = useState(0)
     const [time, setTime] = useState(60)
@@ -261,6 +262,15 @@ const Game: React.FC<Props> = ({ root }) => {
         }    
     }
 
+    const handleWastedMoveClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, move: WastedMoves) => {
+        e.preventDefault()
+        if (gameActive || !move) return
+        const { row: pawnRow, col: pawnCol } = stringToRowCol(move.pawn)
+        const { row: knightRow, col: knightCol } = stringToRowCol(move.knight)
+        const newBoard = createBoard(pawnRow, pawnCol, knightRow, knightCol, false)
+        setBoard(newBoard)
+    }
+
     const className = 'Game'
     return (
         <GameContext.Provider value={{ soundOn, setOptionsVisible, markersOn, score, setScore, bestPath, setBestPath, currPath, setCurrPath, wastedMoves, setWastedMoves, setBestPathTotal, setUserPathTotal, audit, setAudit }}>
@@ -298,7 +308,7 @@ const Game: React.FC<Props> = ({ root }) => {
                         <p className={`${className}_score`}>{`Score: ${score}`}</p>
                         <p className={`${className}_time`}>{`Time: ${time}`}</p>
                     </div>
-                    <Board gameActive={gameActive} root={root} />
+                    <Board gameActive={gameActive} root={root} board={board} setBoard={setBoard} />
                     <div className={`${className}_metricsContainer`}>
                         <div className={`${className}_pathsContainer`}>
                             <p className={`${className}_bestPath`} >{`Best Path: ${bestPath}`}</p>
@@ -316,21 +326,21 @@ const Game: React.FC<Props> = ({ root }) => {
                         </svg> 
                     </div>
                     {wastedMovesData.length <= 0 
-                        ? <p style={{ display: wastedMovesVisible ? 'inherit' : 'none' }}>Your inefficient moves will appear here for review</p>
+                        ? <p  className={`${className}_wastedMoveText`} style={{ display: wastedMovesVisible ? 'inherit' : 'none' }}>Your inefficient moves will appear here for review</p>
                         : <div className={`${className}_wastedMoves`} style={{ display: wastedMovesVisible ? 'inherit' : 'none' }}>
                                 {wastedMovesData.map((move, idx) => {
                                     return (
-                                    <div key={`wastedmove_${idx}`} className={`${className}_moveContainer`}>
+                                    <button key={`wastedmove_${idx}`} className={`${className}_moveContainer`} onClick={(e) => handleWastedMoveClick(e, move)} >
                                         <div className={`${className}_moveSummary`}>
-                                            <p>{`Knight: ${move.knight}`}</p>
-                                            <p>{`Pawn: ${move.pawn}`}</p>
-                                            <p>{`Best Path: ${move.bestPath}`}</p>
-                                            <p>{`Your Path: ${move.userPath}`}</p>
+                                            <p className={`${className}_wastedMoveText`}>{`Knight: ${move.knight}`}</p>
+                                            <p className={`${className}_wastedMoveText`}>{`Pawn: ${move.pawn}`}</p>
+                                            <p className={`${className}_wastedMoveText`}>{`Best Path: ${move.bestPath}`}</p>
+                                            <p className={`${className}_wastedMoveText`}>{`Your Path: ${move.userPath}`}</p>
                                         </div>
                                         <div className={`${className}_moveDetails`}>
-                                            <p>{`Your Moves: ${move.userMoves.map(usermove => ` ${usermove}`)}`}</p>
+                                            <p className={`${className}_wastedMoveText`}>{`Your Moves: ${move.userMoves.map(usermove => ` ${usermove}`)}`}</p>
                                         </div>
-                                    </div>
+                                    </button>
                                     )
                                 })}
                         </div>
