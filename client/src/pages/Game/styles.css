@@ -102,6 +102,21 @@
     user-select: none;
 }
 
+.Game_wastedMovesHeaderContainer {
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 75vh;
+    place-self: center;
+}
+
+.Game_headerPositionsContainer,
+.Game_headerPathsContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .Game_metricsContainer {
     padding: 0 0.5rem;
     width: 100%;
@@ -114,6 +129,24 @@
 .Game_pathsContainer {
     display: flex;
     gap: 0.5rem;
+}
+
+.Game_wastedMovesButtonsContainer {
+    padding: 0 0.5rem;
+    width: 100%;
+    max-width: 75vh;
+    place-self: center;
+    display: flex;
+}
+
+.Game_wastedMovesButton:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.Game_buttonDisabled {
+    cursor: inherit !important;
+    opacity: 0.5;
 }
 
 .Game_wastedMovesContainer {
@@ -198,6 +231,10 @@
     stroke: #FFFFFF;
 }
 
+.Game_darkMode > div > div > button > svg {
+    fill: #FFFFFF
+}
+
 .Game_darkMode > div > .Game_startButton,
 .Game_darkMode > div > div > div > div > div > .Game_buttonActive {
     background-color: #769656;
@@ -209,7 +246,9 @@
     .Game_scoreTimeContainer,
     .Game_metricsContainer,
     .Game_wastedMovesContainer,
-    .Game_buttonsContainer {
+    .Game_buttonsContainer,
+    .Game_wastedMovesButtonsContainer,
+    .Game_wastedMovesHeaderContainer {
         padding: 0;
     }
 }

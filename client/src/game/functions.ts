@@ -44,7 +44,7 @@ export const createBoard = (pawnRow: number, pawnCol: number, knightRow: number,
                 ? '#f0d9b5' : '#b58863',
                 knightVisible: (i === knightRow && j === knightCol) 
                 ? true : false,
-                pawnVisible: (i === pawnRow && j === pawnCol) 
+                pawnVisible: (i === pawnRow && j === pawnCol) && (`${pawnRow}${pawnCol}` !== `${knightRow}${knightCol}`)
                 ? true : false,
                 validMove: false
             })

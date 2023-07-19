@@ -10,6 +10,8 @@ import { gsap } from 'gsap'
 import classNames from 'classnames'
 import './styles.css'
 import { createBoard, createWastedMovesAnalysis, stringToRowCol } from '../../game/functions'
+import ArrowLeftSVG from '../../components/ArrowLeftSVG'
+import ArrowRightSVG from '../../components/ArrowRightSVG'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -41,6 +43,8 @@ const Game: React.FC<Props> = ({ root }) => {
     const [audit, setAudit] = useState<Audit[]>([])
     const [wastedMovesVisible, setWastedMovesVisible] = useState(false)
     const [wastedMovesData, setWastedMovesData] = useState<WastedMoves[]>([])
+    const [selectedWastedMove, setSelectedWastedMove] = useState<WastedMoves | null>(null)
+    const [wastedMovesIdx, setWastedMovesIdx] = useState(0)
     const timeRef = useRef<number>(0)
     const intervalRef = useRef<NodeJS.Timer>()
     const scoreRef = useRef<number>(score)
@@ -213,6 +217,8 @@ const Game: React.FC<Props> = ({ root }) => {
             clearInterval(intervalRef.current)
             setWastedMovesData(createWastedMovesAnalysis(auditRef.current))
             setWastedMovesVisible(true)
+            setSelectedWastedMove(null)
+            setWastedMovesIdx(0)
             return
         }
         setTime(60)
@@ -225,6 +231,8 @@ const Game: React.FC<Props> = ({ root }) => {
         setOptionsVisible(false)
         setWastedMovesData([])
         setWastedMovesVisible(false)
+        setSelectedWastedMove(null)
+        setWastedMovesIdx(0)
         intervalRef.current = setInterval(() => {
             if (timeRef.current <= 0) {
                 clearInterval(intervalRef.current)
@@ -262,6 +270,25 @@ const Game: React.FC<Props> = ({ root }) => {
         }    
     }
 
+    const handleArrowClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, direction: string) => {
+        e.preventDefault()
+        if (gameActive || !selectedWastedMove) return
+        if (direction === 'right' && wastedMovesIdx < selectedWastedMove.userMoves.length - 1) {
+            const { row: pawnRow, col: pawnCol } = stringToRowCol(selectedWastedMove.pawn)
+            const { row: knightRow, col: knightCol } = stringToRowCol(selectedWastedMove.userMoves[wastedMovesIdx + 1])
+            const newBoard = createBoard(pawnRow, pawnCol, knightRow, knightCol, false)
+            setBoard(newBoard)
+            setWastedMovesIdx(wastedMovesIdx + 1)
+        }
+        if (direction === 'left' && wastedMovesIdx > 0) {
+            const { row: pawnRow, col: pawnCol } = stringToRowCol(selectedWastedMove.pawn)
+            const { row: knightRow, col: knightCol } = stringToRowCol(selectedWastedMove.userMoves[wastedMovesIdx - 1])
+            const newBoard = createBoard(pawnRow, pawnCol, knightRow, knightCol, false)
+            setBoard(newBoard)
+            setWastedMovesIdx(wastedMovesIdx - 1)
+        }
+    }
+    
     const handleWastedMoveClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, move: WastedMoves) => {
         e.preventDefault()
         if (gameActive || !move) return
@@ -269,6 +296,8 @@ const Game: React.FC<Props> = ({ root }) => {
         const { row: knightRow, col: knightCol } = stringToRowCol(move.knight)
         const newBoard = createBoard(pawnRow, pawnCol, knightRow, knightCol, false)
         setBoard(newBoard)
+        setSelectedWastedMove(move)
+        setWastedMovesIdx(0)
     }
 
     const className = 'Game'
@@ -304,18 +333,55 @@ const Game: React.FC<Props> = ({ root }) => {
                     </div>
                 </div>
                 <div className={`${className}_gameAreaContainer`}>
-                    <div className={`${className}_scoreTimeContainer`}>
-                        <p className={`${className}_score`}>{`Score: ${score}`}</p>
-                        <p className={`${className}_time`}>{`Time: ${time}`}</p>
-                    </div>
-                    <Board gameActive={gameActive} root={root} board={board} setBoard={setBoard} />
-                    <div className={`${className}_metricsContainer`}>
-                        <div className={`${className}_pathsContainer`}>
-                            <p className={`${className}_bestPath`} >{`Best Path: ${bestPath}`}</p>
-                            <p className={`${className}_currPath`} >{`Current Path: ${currPath}`}</p>
+                    {selectedWastedMove ?
+                        <div className={`${className}_wastedMovesHeaderContainer`}>
+                            <div className={`${className}_headerPositionsContainer`}>
+                                <p>{`Start: ${selectedWastedMove.knight}`}</p>
+                                <p>{`End: ${selectedWastedMove.pawn}`}</p>
+                            </div>
+                            <div className={`${className}_headerPathsContainer`}>
+                                <p>{`Best Path: ${selectedWastedMove.bestPath}`}</p>
+                                <p>{`Your Path: ${selectedWastedMove.userPath}`}</p>
+                            </div>
                         </div>
-                        <p className={`${className}_wasted`} >{`Wasted: ${wastedMoves}`}</p>
-                    </div>
+                    :    
+                        <div className={`${className}_scoreTimeContainer`}>
+                            <p className={`${className}_score`}>{`Score: ${score}`}</p>
+                            <p className={`${className}_time`}>{`Time: ${time}`}</p>
+                        </div>
+                    }
+                    <Board gameActive={gameActive} root={root} board={board} setBoard={setBoard} />
+                    {selectedWastedMove ? 
+                        <div className={`${className}_wastedMovesButtonsContainer`}>
+                            <p className={`${className}_wastedMovesButtonText`}>Your Moves</p>
+                            <button 
+                                className={classNames(
+                                    `${className}_wastedMovesButton`, 
+                                    wastedMovesIdx === 0 && `${className}_buttonDisabled`)
+                                } 
+                                onClick={(e) => handleArrowClick(e, 'left')}
+                            >
+                                <ArrowLeftSVG />
+                            </button>
+                            <button 
+                                className={classNames(
+                                    `${className}_wastedMovesButton`,
+                                    wastedMovesIdx >= selectedWastedMove.userMoves.length - 1 && `${className}_buttonDisabled`
+                                )} 
+                                onClick={(e) => handleArrowClick(e, 'right')}
+                            >
+                                <ArrowRightSVG />
+                            </button>
+                        </div>
+                    :                        
+                        <div className={`${className}_metricsContainer`}>
+                            <div className={`${className}_pathsContainer`}>
+                                <p className={`${className}_bestPath`} >{`Best Path: ${bestPath}`}</p>
+                                <p className={`${className}_currPath`} >{`Current Path: ${currPath}`}</p>
+                            </div>
+                            <p className={`${className}_wasted`} >{`Wasted: ${wastedMoves}`}</p>
+                        </div>
+                    }
                 </div>
                 <div className={`${className}_wastedMovesContainer`}>
                     <div className={`${className}_wastedMovesToggleContainer`} onClick={() => setWastedMovesVisible(!wastedMovesVisible)}>
