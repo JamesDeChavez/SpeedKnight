@@ -1,5 +1,5 @@
 import classNames from 'classnames'
-import React, { useContext, useState } from 'react'
+import React, { useContext } from 'react'
 import './styles.css'
 import GlobalContext from '../../utils/GlobalContext'
 
