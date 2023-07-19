@@ -1,0 +1,24 @@
+.WastedMovesHeader {
+    padding: 0 0.5rem;
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    max-width: 75vh;
+    place-self: center;
+}
+
+.WastedMovesHeader_headerPositionsContainer,
+.WastedMovesHeader_headerPathsContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.WastedMovesHeader_darkMode > div > p {
+    color: #FFFFFF;
+}
+
+@media screen and (min-width: 700px) {
+    .WastedMovesHeader {
+        padding: 0;
+    }
+}

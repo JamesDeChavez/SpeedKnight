@@ -1,0 +1,31 @@
+.WastedMovesButtons {
+    padding: 0 0.5rem;
+    width: 100%;
+    max-width: 75vh;
+    place-self: center;
+    display: flex;
+}
+
+.WastedMovesButtons_wastedMovesButton:hover {
+    cursor: pointer;
+    opacity: 0.5;
+}
+
+.WastedMovesButtons_buttonDisabled {
+    cursor: inherit !important;
+    opacity: 0.5;
+}
+
+.WastedMovesButtons_darkMode > p {
+    color: #FFFFFF;
+}
+
+.WastedMovesButtons_darkMode > button > svg {
+    fill: #FFFFFF;
+}
+
+@media screen and (min-width: 700px) {
+    .WastedMovesButtons {
+        padding: 0;
+    }
+}

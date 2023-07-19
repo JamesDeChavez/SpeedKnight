@@ -9,9 +9,13 @@ import { Audit, WastedMoves, BoardSpace } from '../../utils/interfaces'
 import { gsap } from 'gsap'
 import classNames from 'classnames'
 import './styles.css'
-import { createBoard, createWastedMovesAnalysis, stringToRowCol } from '../../game/functions'
-import ArrowLeftSVG from '../../components/ArrowLeftSVG'
-import ArrowRightSVG from '../../components/ArrowRightSVG'
+import { createWastedMovesAnalysis } from '../../game/functions'
+import GameOptions from '../../components/GameOptions'
+import WastedMovesHeader from '../../components/WastedMovesHeader'
+import ScoreTimeHeader from '../../components/ScoreTimeHeader'
+import WastedMovesButtons from '../../components/WastedMovesButtons'
+import GameMetrics from '../../components/GameMetrics'
+import WastedMoveDetails from '../../components/WastedMoveDetails'
 
 interface Props {
     root: React.MutableRefObject<null>
@@ -60,29 +64,17 @@ const Game: React.FC<Props> = ({ root }) => {
         setMarkersOn(markersOnPref === 'true' ? true : false)
     }, [])
 
-    useEffect(() => {
-        timeRef.current = time
-    }, [time])
+    useEffect(() => { timeRef.current = time }, [time])
 
-    useEffect(() => {
-        scoreRef.current = score
-    }, [score])
+    useEffect(() => { scoreRef.current = score }, [score])
 
-    useEffect(() => {
-        bestPathRef.current = bestPath
-    }, [bestPath])
+    useEffect(() => { bestPathRef.current = bestPath }, [bestPath])
 
-    useEffect(() => {
-        currPathRef.current = currPath
-    }, [currPath])
+    useEffect(() => { currPathRef.current = currPath }, [currPath])
 
-    useEffect(() => {
-        wastedMovesRef.current = wastedMoves
-    }, [wastedMoves])
+    useEffect(() => { wastedMovesRef.current = wastedMoves }, [wastedMoves])
 
-    useEffect(() => {
-        auditRef.current = audit
-    }, [audit])
+    useEffect(() => { auditRef.current = audit }, [audit])
 
     useEffect(() => {
         if (!submitScoreData) return
@@ -98,9 +90,7 @@ const Game: React.FC<Props> = ({ root }) => {
             const path = '/score/user'            
             const currentUserId = userData.attributes ? userData.attributes.sub : userData.signInUserSession.idToken.payload.sub
             const myInit: any = {
-                queryStringParameters: {
-                    userId: currentUserId
-                },
+                queryStringParameters: { userId: currentUserId },
                 headers: {
                     Accept: "*/*",
                     "Content-Type": "application/json",
@@ -122,12 +112,7 @@ const Game: React.FC<Props> = ({ root }) => {
         const getGlobalMetrics = async () => {
             const apiName = 'SpeedKnightChallenge'
             const path = '/score/global'
-            const myInit: any = {
-                headers: {
-                    Accept: "*/*",
-                    "Content-Type": "application/json"
-                }
-            }
+            const myInit: any = { headers: { Accept: "*/*", "Content-Type": "application/json" } }
             try {
                 const response = await API.get(apiName, path, myInit)
                 setGlobalBest(response.scoreMax)
@@ -148,23 +133,19 @@ const Game: React.FC<Props> = ({ root }) => {
         if (timeRef.current > 0 || gameActive) return
         const submitScore = async () => {
             if (!userLoggedIn) {
-                sessionStorage.setItem(
-                    'scoresTotal', 
+                sessionStorage.setItem('scoresTotal', 
                     sessionStorage.getItem('scoresTotal') 
                         ? `${Number(sessionStorage.getItem('scoresTotal')) + scoreRef.current}` 
                         : `${scoreRef.current}`)
-                sessionStorage.setItem(
-                    'scoresCount', 
+                sessionStorage.setItem('scoresCount', 
                     sessionStorage.getItem('scoresCount') 
                         ? `${Number(sessionStorage.getItem('scoresCount')) + 1}` 
                         : '1')
-                sessionStorage.setItem(
-                    'bestScore',
+                sessionStorage.setItem('bestScore',
                     sessionStorage.getItem('bestScore')
                         ? `${Math.max(Number(sessionStorage.getItem('bestScore')), scoreRef.current)}`
                         : `${scoreRef.current}`)
-            }
-            
+            }            
             const apiName = 'SpeedKnightChallenge'
             const path = '/score'
             const currentUserId = userData 
@@ -180,10 +161,7 @@ const Game: React.FC<Props> = ({ root }) => {
                     key: key, 
                     aud: auditRef.current
                 }, 
-                headers: {
-                    Accept: "*/*",
-                    "Content-Type": "application/json"
-                } 
+                headers: { Accept: "*/*", "Content-Type": "application/json" } 
             }
             try {
                 const response = await API.post(apiName, path, myInit)
@@ -198,7 +176,6 @@ const Game: React.FC<Props> = ({ root }) => {
 
     useLayoutEffect(() => {
         let gsapContext = gsap.context(() => {
-
         //Entrance animation on render
         gsap.fromTo(`.${className}_score`, {duration: 0.5, x: '-100%'}, {x: 0})
         gsap.fromTo(`.${className}_time`, {duration: 0.5, x: '100%'}, {x: 0})
@@ -208,7 +185,7 @@ const Game: React.FC<Props> = ({ root }) => {
         }, root)
     }, [])
 
-    const handleButtonClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+    const handleStartClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
         e.preventDefault()    
         if (gameActive) {
             setGameActive(false)
@@ -248,172 +225,43 @@ const Game: React.FC<Props> = ({ root }) => {
         setGameActive(true)
     }
 
-    const handleSoundClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, action: string) => {
-        e.preventDefault()
-        if (action === 'ON') {
-            setSoundOn(true)
-            localStorage.setItem('soundOn', 'true')
-        } else {
-            setSoundOn(false)
-            localStorage.setItem('soundOn', 'false')
-        }
-    }
-
-    const handleMarkersClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, action: string) => {
-        e.preventDefault()
-        if (action === 'ON') {
-            setMarkersOn(true)
-            localStorage.setItem('markersOn', 'true')
-        } else {
-            setMarkersOn(false)
-            localStorage.setItem('markersOn', 'false')
-        }    
-    }
-
-    const handleArrowClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, direction: string) => {
-        e.preventDefault()
-        if (gameActive || !selectedWastedMove) return
-        if (direction === 'right' && wastedMovesIdx < selectedWastedMove.userMoves.length - 1) {
-            const { row: pawnRow, col: pawnCol } = stringToRowCol(selectedWastedMove.pawn)
-            const { row: knightRow, col: knightCol } = stringToRowCol(selectedWastedMove.userMoves[wastedMovesIdx + 1])
-            const newBoard = createBoard(pawnRow, pawnCol, knightRow, knightCol, false)
-            setBoard(newBoard)
-            setWastedMovesIdx(wastedMovesIdx + 1)
-        }
-        if (direction === 'left' && wastedMovesIdx > 0) {
-            const { row: pawnRow, col: pawnCol } = stringToRowCol(selectedWastedMove.pawn)
-            const { row: knightRow, col: knightCol } = stringToRowCol(selectedWastedMove.userMoves[wastedMovesIdx - 1])
-            const newBoard = createBoard(pawnRow, pawnCol, knightRow, knightCol, false)
-            setBoard(newBoard)
-            setWastedMovesIdx(wastedMovesIdx - 1)
-        }
-    }
-    
-    const handleWastedMoveClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>, move: WastedMoves) => {
-        e.preventDefault()
-        if (gameActive || !move) return
-        const { row: pawnRow, col: pawnCol } = stringToRowCol(move.pawn)
-        const { row: knightRow, col: knightCol } = stringToRowCol(move.knight)
-        const newBoard = createBoard(pawnRow, pawnCol, knightRow, knightCol, false)
-        setBoard(newBoard)
-        setSelectedWastedMove(move)
-        setWastedMovesIdx(0)
-    }
-
     const className = 'Game'
     return (
         <GameContext.Provider value={{ soundOn, setOptionsVisible, markersOn, score, setScore, bestPath, setBestPath, currPath, setCurrPath, wastedMoves, setWastedMoves, setBestPathTotal, setUserPathTotal, audit, setAudit }}>
             <div className={classNames(className, darkMode && className + '_darkMode')}>
                 <div className={`${className}_instructionsContainer`}>
                     <p className={`${className}_instructions`}><strong>Game Rules: </strong>Capture as many pawns as you can in 60 seconds using only one knight piece.</p>
-                    <div className={`${className}_gameOptionsContainer`}>
-                        <div className={`${className}_gameOptionsToggleContainer`} onClick={() => setOptionsVisible(!optionsVisible)}>
-                            <p className={`${className}_gameOptionsToggleText`}>Options</p>
-                            <svg className={`${className}_toggleSVG`} viewBox="0 0 100 100" >
-                                <line x1="5" y1="50" x2="95" y2="50" strokeWidth={10}/>
-                                <line x1="50" y1="5" x2="50" y2="95" strokeWidth={10} style={{ display: optionsVisible ? 'none' : 'inherit' }}/>
-                            </svg> 
-                        </div>
-                        <div className={`${className}_options`} style={{ display: optionsVisible ? 'inherit' : 'none' }}>
-                            <div className={`${className}_optionContainer`}>
-                                <p>Sound</p>
-                                <div className={`${className}_optionButtonsContainer`}>
-                                    <button className={classNames(`${className}_optionButton`, soundOn && `${className}_buttonActive`)} onClick={(e) => handleSoundClick(e, 'ON')}>On</button>
-                                    <button className={classNames(`${className}_optionButton`, !soundOn && `${className}_buttonActive`)} onClick={(e) => handleSoundClick(e, 'OFF')}>Off</button>
-                                </div>
-                            </div>
-                            <div className={`${className}_optionContainer`}>
-                                <p>Red Markers</p>
-                                <div className={`${className}_optionButtonsContainer`}>
-                                    <button className={classNames(`${className}_optionButton`, markersOn && `${className}_buttonActive`)} onClick={(e) => handleMarkersClick(e, 'ON')}>On</button>
-                                    <button className={classNames(`${className}_optionButton`, !markersOn && `${className}_buttonActive`)} onClick={(e) => handleMarkersClick(e, 'OFF')}>Off</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <GameOptions 
+                        soundOn={soundOn} setSoundOn={setSoundOn} 
+                        markersOn={markersOn} setMarkersOn={setMarkersOn} 
+                        optionsVisible={optionsVisible} setOptionsVisible={setOptionsVisible} 
+                    />
                 </div>
                 <div className={`${className}_gameAreaContainer`}>
                     {selectedWastedMove ?
-                        <div className={`${className}_wastedMovesHeaderContainer`}>
-                            <div className={`${className}_headerPositionsContainer`}>
-                                <p>{`Start: ${selectedWastedMove.knight}`}</p>
-                                <p>{`End: ${selectedWastedMove.pawn}`}</p>
-                            </div>
-                            <div className={`${className}_headerPathsContainer`}>
-                                <p>{`Best Path: ${selectedWastedMove.bestPath}`}</p>
-                                <p>{`Your Path: ${selectedWastedMove.userPath}`}</p>
-                            </div>
-                        </div>
+                        <WastedMovesHeader selectedWastedMove={selectedWastedMove} />
                     :    
-                        <div className={`${className}_scoreTimeContainer`}>
-                            <p className={`${className}_score`}>{`Score: ${score}`}</p>
-                            <p className={`${className}_time`}>{`Time: ${time}`}</p>
-                        </div>
+                        <ScoreTimeHeader score={score} time={time} />
                     }
                     <Board gameActive={gameActive} root={root} board={board} setBoard={setBoard} />
                     {selectedWastedMove ? 
-                        <div className={`${className}_wastedMovesButtonsContainer`}>
-                            <p className={`${className}_wastedMovesButtonText`}>Your Moves</p>
-                            <button 
-                                className={classNames(
-                                    `${className}_wastedMovesButton`, 
-                                    wastedMovesIdx === 0 && `${className}_buttonDisabled`)
-                                } 
-                                onClick={(e) => handleArrowClick(e, 'left')}
-                            >
-                                <ArrowLeftSVG />
-                            </button>
-                            <button 
-                                className={classNames(
-                                    `${className}_wastedMovesButton`,
-                                    wastedMovesIdx >= selectedWastedMove.userMoves.length - 1 && `${className}_buttonDisabled`
-                                )} 
-                                onClick={(e) => handleArrowClick(e, 'right')}
-                            >
-                                <ArrowRightSVG />
-                            </button>
-                        </div>
+                        <WastedMovesButtons gameActive={gameActive} wastedMovesIdx={wastedMovesIdx} setWastedMovesIdx={setWastedMovesIdx} selectedWastedMove={selectedWastedMove} setBoard={setBoard} />
                     :                        
-                        <div className={`${className}_metricsContainer`}>
-                            <div className={`${className}_pathsContainer`}>
-                                <p className={`${className}_bestPath`} >{`Best Path: ${bestPath}`}</p>
-                                <p className={`${className}_currPath`} >{`Current Path: ${currPath}`}</p>
-                            </div>
-                            <p className={`${className}_wasted`} >{`Wasted: ${wastedMoves}`}</p>
-                        </div>
+                        <GameMetrics bestPath={bestPath} currPath={currPath} wastedMoves={wastedMoves} />
                     }
                 </div>
-                <div className={`${className}_wastedMovesContainer`}>
-                    <div className={`${className}_wastedMovesToggleContainer`} onClick={() => setWastedMovesVisible(!wastedMovesVisible)}>
-                        <p className={`${className}_wastedMovesToggleText`}>Wasted Moves Details</p>
-                        <svg className={`${className}_toggleSVG`} viewBox="0 0 100 100" >
-                            <line x1="5" y1="50" x2="95" y2="50" strokeWidth={10}/>
-                            <line x1="50" y1="5" x2="50" y2="95" strokeWidth={10} style={{ display: wastedMovesVisible ? 'none' : 'inherit' }}/>
-                        </svg> 
-                    </div>
-                    {wastedMovesData.length <= 0 
-                        ? <p  className={`${className}_wastedMoveText`} style={{ display: wastedMovesVisible ? 'inherit' : 'none' }}>Your inefficient moves will appear here for review</p>
-                        : <div className={`${className}_wastedMoves`} style={{ display: wastedMovesVisible ? 'inherit' : 'none' }}>
-                                {wastedMovesData.map((move, idx) => {
-                                    return (
-                                    <button key={`wastedmove_${idx}`} className={`${className}_moveContainer`} onClick={(e) => handleWastedMoveClick(e, move)} >
-                                        <div className={`${className}_moveSummary`}>
-                                            <p className={`${className}_wastedMoveText`}>{`Knight: ${move.knight}`}</p>
-                                            <p className={`${className}_wastedMoveText`}>{`Pawn: ${move.pawn}`}</p>
-                                            <p className={`${className}_wastedMoveText`}>{`Best Path: ${move.bestPath}`}</p>
-                                            <p className={`${className}_wastedMoveText`}>{`Your Path: ${move.userPath}`}</p>
-                                        </div>
-                                        <div className={`${className}_moveDetails`}>
-                                            <p className={`${className}_wastedMoveText`}>{`Your Moves: ${move.userMoves.map(usermove => ` ${usermove}`)}`}</p>
-                                        </div>
-                                    </button>
-                                    )
-                                })}
-                        </div>
-                    }
-                </div>              
+                <WastedMoveDetails 
+                    gameActive={gameActive} 
+                    wastedMovesVisible={wastedMovesVisible} 
+                    setWastedMovesVisible={setWastedMovesVisible}
+                    wastedMovesData={wastedMovesData}
+                    selectedWastedMove={selectedWastedMove}
+                    setSelectedWastedMove={setSelectedWastedMove} 
+                    setBoard={setBoard}
+                    setWastedMovesIdx={setWastedMovesIdx} 
+                />              
                 <div className={`${className}_buttonsContainer`}>
-                    <button className={`${className}_startButton`} onClick={handleButtonClick}>
+                    <button className={`${className}_startButton`} onClick={handleStartClick}>
                         {gameActive ? 'Quit Game' : 'Start Game'}
                     </button>
                 </div>

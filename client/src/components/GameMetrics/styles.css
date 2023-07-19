@@ -1,0 +1,30 @@
+.GameMetrics {
+    padding: 0 0.5rem;
+    width: 100%;
+    max-width: 75vh;
+    place-self: center;
+    display: flex;
+    justify-content: space-between;
+}
+
+.GameMetrics_pathsContainer {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.GameMetrics_darkMode > p,
+.GameMetrics_darkMode > div > p {
+    color: #FFFFFF;
+}
+
+@media screen and (min-width: 700px) {
+    .GameMetrics {
+        padding: 0;
+    }
+}
+
+@media screen and (min-width: 1100px) {
+    .GameMetrics {
+        align-self: start;
+    }
+}
