@@ -21,5 +21,6 @@ As a user:
 - I can share my scores with one-click
 - I can track my high scores and my average scores
 - I can compare my scores with the global leaderboard and global average
+- I can learn and improve by reviewing the post-game efficiency report
 
 
