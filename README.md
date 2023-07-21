@@ -10,7 +10,7 @@ Link to Website: https://www.speedknightchallenge.com/
 - State Management - useContext
 - REST API - API Gateway + AWS Lambda
 - Database - DynamoDB
-- Testing - Jest and React Testing Library
+- Testing - Vitest
 - Authentication - Amazon Cognito
 - Animation - GSAP
 
