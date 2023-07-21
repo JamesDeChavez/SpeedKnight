@@ -1,7 +1,7 @@
 .WastedMoveDetails {
     padding: 0 0.5rem;
     max-width: 75vh;
-    place-self: center;
+    place-self: start;
     width: 100%;
     display: grid;
     gap: 0.5rem;
