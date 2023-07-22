@@ -18,7 +18,10 @@ const Profile = () => {
     const navigate = useNavigate()
 
     useEffect(() => {
-        if (!userLoggedIn) navigate('/')
+        if (!userLoggedIn || !userData) {
+            navigate('/')
+            return
+        }
         setUsername(userData.attributes.preferred_username)
         setEmail(userData.attributes.email)
     }, [userData, userLoggedIn])

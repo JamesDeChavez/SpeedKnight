@@ -47,6 +47,7 @@ const WastedMovesButtons: React.FC<Props> = ({ gameActive, wastedMovesIdx, selec
                     wastedMovesIdx === 0 && `${className}_buttonDisabled`)
                 } 
                 onClick={(e) => handleArrowClick(e, 'left')}
+                data-testid="leftWastedArrow"
             >
                 <ArrowLeftSVG />
             </button>
@@ -56,6 +57,7 @@ const WastedMovesButtons: React.FC<Props> = ({ gameActive, wastedMovesIdx, selec
                     wastedMovesIdx >= selectedWastedMove.userMoves.length - 1 && `${className}_buttonDisabled`
                 )} 
                 onClick={(e) => handleArrowClick(e, 'right')}
+                data-testid="rightWastedArrow"
             >
                 <ArrowRightSVG />
             </button>

@@ -110,6 +110,7 @@ const Space: React.FC<Props> = ({ space, row, col, board, setBoard, knightPositi
                 : space.backgroundColor
             }}
             onMouseDown={handleMouseDown}
+            data-testid="BoardSpace"
         >
             {space.knightVisible && <KnightSVG />}
             {space.pawnVisible && <PawnSVG />}

@@ -29,7 +29,7 @@ const Instructions = () => {
             <ul className={`${className}_list`}>
                 <li className={`${className}_listitem`}>Pawns randomly appear on the board</li>
                 <li className={`${className}_listitem`}>You have 60 second to capture as many pawns as you can</li>
-                <li className={`${className}_listitem`}>The color of the chess board tiles will turn red if it is a valid move for your knight </li>
+                <li className={`${className}_listitem`}>The color of the chess board tiles will turn red if it is a valid move for your knight</li>
             </ul>
             <div className={`${className}_exampleContainer`}>
                 <h3>Example</h3>

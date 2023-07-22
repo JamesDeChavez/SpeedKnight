@@ -15,6 +15,7 @@ const UserMetrics = () => {
 
     useEffect(() => {
         const getUserMetrics = async () => {
+            if (!userData) return
             setSpinnersVisible(true)
             const apiName = 'SpeedKnightChallenge'
             const path = '/score/user'            

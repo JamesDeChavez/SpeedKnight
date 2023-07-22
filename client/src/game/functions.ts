@@ -3,7 +3,7 @@ import { Audit, BoardSpace, WastedMoves } from "../utils/interfaces"
 const rows = [0, 1, 2, 3, 4, 5, 6, 7]
 const columns = [0, 1, 2, 3, 4, 5, 6, 7]
 
-const isValidMove = (x: number, y: number) => {
+export const isValidMove = (x: number, y: number) => {
     if (x < 0 || x > 7 || y < 0 || y > 7) return false
     return true;
 }

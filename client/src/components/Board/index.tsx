@@ -50,7 +50,7 @@ const Board: React.FC<Props> = ({ gameActive, root, board, setBoard }) => {
 
     const className = 'Board'
     return (
-        <div className={className}>
+        <div className={className} data-testid='Board'>
             {board.map((row, i) => {
                 return row.map((space, j) => {
                     return <Space 
